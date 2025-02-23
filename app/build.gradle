@@ -1,0 +1,19 @@
+plugins {
+    id("org.jetbrains.kotlin.jvm") version "1.8.0"
+    id("application")
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    // JDBC MySQL Driver
+    implementation("mysql:mysql-connector-java:8.0.33")
+}
+
+application {
+    mainClass.set("hms.App")
+}
