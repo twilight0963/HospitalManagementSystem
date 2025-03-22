@@ -2,8 +2,11 @@ package hospital.management.system;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 
-public class Login extends JFrame {
+public class Login extends JFrame implements ActionListener {
 
     JTextField textField;
     JPasswordField jPasswordField;
@@ -30,14 +33,14 @@ public class Login extends JFrame {
         textField = new JTextField();
         textField.setBounds(150,20,150,30);
         textField.setFont(new Font("Tahoma",Font.PLAIN,15));
-        textField.setBackground(new Color(255,179,0));
+        textField.setBackground(new Color(255, 222, 89));
         add(textField);
 
         //passwordField = textBox to enter the password
         jPasswordField = new JPasswordField();
         jPasswordField.setBounds(150,70,150,30);
         jPasswordField.setFont(new Font("Tahoma",Font.PLAIN,15));
-        jPasswordField.setBackground(new Color(255,179,0));
+        jPasswordField.setBackground(new Color(255, 222, 89));
         add(jPasswordField);
 
         //login image
@@ -54,6 +57,7 @@ public class Login extends JFrame {
         b1.setFont(new Font("serif",Font.BOLD,15));
         b1.setBackground(Color.BLACK);
         b1.setForeground(Color.WHITE);
+        b1.addActionListener(this);
         add(b1);
 
         //button(cancel)
@@ -62,6 +66,7 @@ public class Login extends JFrame {
         b2.setFont(new Font("serif",Font.BOLD,15));
         b2.setBackground(Color.BLACK);
         b2.setForeground(Color.WHITE);
+        b2.addActionListener(this);
         add(b2);
 
         //background
@@ -71,7 +76,40 @@ public class Login extends JFrame {
         setLayout(null);
         setVisible(true);
     }
+    //logic behind login
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == b1){
+
+            try{
+
+                conn c = new conn();
+                String user=textField.getText();
+                String Pass=jPasswordField.getText();
+
+                String q = "select * from login where ID='"+user+"' and PW='"+Pass+"'";
+                ResultSet resultSet = c.statement.executeQuery(q);
+
+                if(resultSet.next()){
+                    new Reception();
+                    setVisible(false);
+                }else{
+                    JOptionPane.showMessageDialog(null,"Invalid Username or Password");
+                }
+
+            }catch (Exception E){
+                E.printStackTrace();
+            }
+
+        }else{
+            System.exit(10);
+        }
+    }
+
+
     public static void main(String[] args) {
         new Login();
     }
+
+
 }
