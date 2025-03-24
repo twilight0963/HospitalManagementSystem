@@ -1,6 +1,7 @@
 package hospital.management.system;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,108 +9,189 @@ import java.sql.ResultSet;
 
 public class Login extends JFrame implements ActionListener {
 
-    JTextField textField;
-    JPasswordField jPasswordField;
-    JButton b1,b2;
+    private JTextField usernameField;
+    private JPasswordField passwordField;
+    private JButton loginButton, cancelButton;
+    private final Color PRIMARY_COLOR = new Color(41, 128, 185); // Modern blue
+    private final Color ACCENT_COLOR = new Color(231, 76, 60);  // Modern red
+    private final Color BACKGROUND_COLOR = new Color(245, 245, 245);
+    private final Color TEXT_COLOR = new Color(52, 73, 94);
+    private final Font HEADER_FONT = new Font("Segoe UI", Font.BOLD, 16);
+    private final Font REGULAR_FONT = new Font("Segoe UI", Font.PLAIN, 14);
 
+    public Login() {
+        setTitle("Health Safari - Login");
+        initializeUI();
+        setupLayout();
+        setupActionListeners();
 
-    Login(){
-
-        //Label for username
-        JLabel namelabel = new JLabel("Username");
-        namelabel.setBounds(40,20,100,30);
-        namelabel.setFont(new Font("Tahoma",Font.BOLD,16));
-        namelabel.setForeground(Color.BLACK);
-        add(namelabel);
-
-        //Label for Password
-        JLabel password = new JLabel("Password");
-        password.setBounds(40,70,100,30);
-        password.setFont(new Font("Tahoma",Font.BOLD,16));
-        password.setForeground(Color.BLACK);
-        add(password);
-
-        //textField = textBox to enter the value
-        textField = new JTextField();
-        textField.setBounds(150,20,150,30);
-        textField.setFont(new Font("Tahoma",Font.PLAIN,15));
-        textField.setBackground(new Color(255, 222, 89));
-        add(textField);
-
-        //passwordField = textBox to enter the password
-        jPasswordField = new JPasswordField();
-        jPasswordField.setBounds(150,70,150,30);
-        jPasswordField.setFont(new Font("Tahoma",Font.PLAIN,15));
-        jPasswordField.setBackground(new Color(255, 222, 89));
-        add(jPasswordField);
-
-        //login image
-        ImageIcon imageIcon = new ImageIcon(ClassLoader.getSystemResource("icon/health safari login.png"));
-        Image i1 = imageIcon.getImage().getScaledInstance(450,450,Image.SCALE_DEFAULT);
-        ImageIcon imageIcon1 = new ImageIcon(i1);
-        JLabel label = new JLabel(imageIcon1);
-        label.setBounds(320,-30,400,300);
-        add(label);
-
-        //button(login)
-        b1 = new JButton("Login");
-        b1.setBounds(40,140,120,30);
-        b1.setFont(new Font("serif",Font.BOLD,15));
-        b1.setBackground(Color.BLACK);
-        b1.setForeground(Color.WHITE);
-        b1.addActionListener(this);
-        add(b1);
-
-        //button(cancel)
-        b2 = new JButton("Cancel");
-        b2.setBounds(180,140,120,30);
-        b2.setFont(new Font("serif",Font.BOLD,15));
-        b2.setBackground(Color.BLACK);
-        b2.setForeground(Color.WHITE);
-        b2.addActionListener(this);
-        add(b2);
-
-        //background
-        getContentPane().setBackground(new Color(109,164,170));
-        setSize(750,300);
-        setLocation(400,270);
-        setLayout(null);
+        // Window settings
+        setSize(800, 400);
+        setLocationRelativeTo(null); // Center on screen
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
         setVisible(true);
     }
-    //logic behind login
+
+    private void initializeUI() {
+        // Set the modern look and feel
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Main background
+        getContentPane().setBackground(BACKGROUND_COLOR);
+        setLayout(new BorderLayout());
+    }
+
+    private void setupLayout() {
+        // Left Panel - Login Form
+        JPanel loginPanel = new JPanel();
+        loginPanel.setLayout(new BoxLayout(loginPanel, BoxLayout.Y_AXIS));
+        loginPanel.setBackground(BACKGROUND_COLOR);
+        loginPanel.setBorder(new EmptyBorder(50, 50, 50, 30));
+
+        // Login header
+        JLabel headerLabel = new JLabel("Welcome Back");
+        headerLabel.setFont(new Font("Segoe UI", Font.BOLD, 24));
+        headerLabel.setForeground(PRIMARY_COLOR);
+        headerLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JLabel subHeaderLabel = new JLabel("Please enter your credentials to continue");
+        subHeaderLabel.setFont(REGULAR_FONT);
+        subHeaderLabel.setForeground(TEXT_COLOR);
+        subHeaderLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        // Add spacing
+        loginPanel.add(headerLabel);
+        loginPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        loginPanel.add(subHeaderLabel);
+        loginPanel.add(Box.createRigidArea(new Dimension(0, 30)));
+
+        // Username field
+        JLabel usernameLabel = new JLabel("Username");
+        usernameLabel.setFont(HEADER_FONT);
+        usernameLabel.setForeground(TEXT_COLOR);
+        usernameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        usernameField = new JTextField();
+        usernameField.setFont(REGULAR_FONT);
+        usernameField.setMaximumSize(new Dimension(300, 35));
+        usernameField.setPreferredSize(new Dimension(300, 35));
+        usernameField.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        // Password field
+        JLabel passwordLabel = new JLabel("Password");
+        passwordLabel.setFont(HEADER_FONT);
+        passwordLabel.setForeground(TEXT_COLOR);
+        passwordLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        passwordField = new JPasswordField();
+        passwordField.setFont(REGULAR_FONT);
+        passwordField.setMaximumSize(new Dimension(300, 35));
+        passwordField.setPreferredSize(new Dimension(300, 35));
+        passwordField.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        // Add form elements with spacing
+        loginPanel.add(usernameLabel);
+        loginPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        loginPanel.add(usernameField);
+        loginPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        loginPanel.add(passwordLabel);
+        loginPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        loginPanel.add(passwordField);
+        loginPanel.add(Box.createRigidArea(new Dimension(0, 30)));
+
+        // Buttons panel
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+        buttonPanel.setBackground(BACKGROUND_COLOR);
+        buttonPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        loginButton = new JButton("Login");
+        loginButton.setFont(HEADER_FONT);
+        loginButton.setBackground(PRIMARY_COLOR);
+        loginButton.setForeground(Color.WHITE);
+        loginButton.setFocusPainted(false);
+        loginButton.setBorderPainted(false);
+        loginButton.setPreferredSize(new Dimension(120, 40));
+
+        cancelButton = new JButton("Cancel");
+        cancelButton.setFont(HEADER_FONT);
+        cancelButton.setBackground(ACCENT_COLOR);
+        cancelButton.setForeground(Color.WHITE);
+        cancelButton.setFocusPainted(false);
+        cancelButton.setBorderPainted(false);
+        cancelButton.setPreferredSize(new Dimension(120, 40));
+
+        buttonPanel.add(loginButton);
+        buttonPanel.add(Box.createRigidArea(new Dimension(15, 0)));
+        buttonPanel.add(cancelButton);
+
+        loginPanel.add(buttonPanel);
+
+        // Right Panel - Logo and Image
+        JPanel logoPanel = new JPanel(new BorderLayout());
+        logoPanel.setBackground(PRIMARY_COLOR);
+
+        // Logo
+        ImageIcon logoIcon = new ImageIcon(ClassLoader.getSystemResource("icon/Health Safari bluebg.png"));
+        Image img = logoIcon.getImage().getScaledInstance(350, 350, Image.SCALE_SMOOTH);
+        ImageIcon scaledLogo = new ImageIcon(img);
+        JLabel logoLabel = new JLabel(scaledLogo);
+        logoLabel.setHorizontalAlignment(JLabel.CENTER);
+
+        logoPanel.add(logoLabel, BorderLayout.CENTER);
+
+        // Add both panels to main frame
+        add(loginPanel, BorderLayout.WEST);
+        add(logoPanel, BorderLayout.CENTER);
+    }
+
+    private void setupActionListeners() {
+        loginButton.addActionListener(this);
+        cancelButton.addActionListener(this);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == b1){
-
-            try{
-
+        if (e.getSource() == loginButton) {
+            try {
                 conn c = new conn();
-                String user=textField.getText();
-                String Pass=jPasswordField.getText();
+                String username = usernameField.getText();
+                String password = new String(passwordField.getPassword());
 
-                String q = "select * from login where ID='"+user+"' and PW='"+Pass+"'";
-                ResultSet resultSet = c.statement.executeQuery(q);
+                // Use prepared statements in a real application to prevent SQL injection
+                String query = "SELECT * FROM login WHERE ID='" + username + "' AND PW='" + password + "'";
+                ResultSet resultSet = c.statement.executeQuery(query);
 
-                if(resultSet.next()){
+                if (resultSet.next()) {
                     new Reception();
-                    setVisible(false);
-                }else{
-                    JOptionPane.showMessageDialog(null,"Invalid Username or Password");
+                    dispose(); // Close login window
+                } else {
+                    showErrorDialog("Invalid Credentials", "Username or password is incorrect. Please try again.");
                 }
-
-            }catch (Exception E){
-                E.printStackTrace();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                showErrorDialog("Database Error", "Could not connect to database. Please try again later.");
             }
-
-        }else{
-            System.exit(10);
+        } else if (e.getSource() == cancelButton) {
+            System.exit(0);
         }
     }
 
-
-    public static void main(String[] args) {
-        new Login();
+    private void showErrorDialog(String title, String message) {
+        JOptionPane.showMessageDialog(
+                this,
+                message,
+                title,
+                JOptionPane.ERROR_MESSAGE
+        );
     }
 
-
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new Login());
+    }
 }

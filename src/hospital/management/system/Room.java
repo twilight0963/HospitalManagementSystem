@@ -16,7 +16,7 @@ public class Room extends JFrame {
 
         JPanel panel = new JPanel();
         panel.setBounds(5,5,890,590);
-        panel.setBackground(new Color(90,156,163));
+        panel.setBackground(new Color(63, 114, 175));
         panel.setLayout(null);
         add(panel);
 
@@ -29,7 +29,8 @@ public class Room extends JFrame {
 
         table = new JTable();
         table.setBounds(10,40,500,400);
-        table.setBackground(new Color(90,156,163));
+        table.setForeground(new Color(249, 247, 247));
+        table.setBackground(new Color(77, 135, 201));
         panel.add(table);
 
         try{
@@ -43,29 +44,33 @@ public class Room extends JFrame {
         }
 
         JLabel label1 = new JLabel("Room NO");
+        label1.setForeground(Color.white);
         label1.setBounds(12,15,80,15);
         label1.setFont(new Font("Tahoma", Font.BOLD, 14));
         panel.add(label1);
 
         JLabel label2 = new JLabel("Availiablity");
         label2.setBounds(135,15,80,15);
+        label2.setForeground(Color.white);
         label2.setFont(new Font("Tahoma", Font.BOLD, 14));
         panel.add(label2);
 
         JLabel label3 = new JLabel("Price");
         label3.setBounds(263,15,80,15);
+        label3.setForeground(Color.white);
         label3.setFont(new Font("Tahoma", Font.BOLD, 14));
         panel.add(label3);
 
         JLabel label4 = new JLabel("Bed Type");
         label4.setBounds(383,15,80,15);
+        label4.setForeground(Color.white);
         label4.setFont(new Font("Tahoma", Font.BOLD, 14));
         panel.add(label4);
 
         JButton back = new JButton("Back");
         back.setBounds(200,500,120,30);
-        back.setBackground(Color.BLACK);
-        back.setForeground(Color.WHITE);
+        back.setBackground(new Color(17, 45, 78));
+        back.setForeground(Color.BLACK);
         panel.add(back);
         back.addActionListener(new ActionListener() {
             @Override
