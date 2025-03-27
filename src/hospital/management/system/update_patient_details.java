@@ -7,165 +7,234 @@ import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 
 public class update_patient_details extends JFrame {
+    // Theme Colors (same as Employee_info)
+    private static final Color PRIMARY_COLOR = new Color(0xEE, 0xF7, 0xFF); // #EEF7FF (lightest blue for borders)
+    private static final Color BACKGROUND_COLOR = new Color(0x4D, 0x86, 0x9C); // #4D869C (darkest teal for background)
+    private static final Color TEXT_COLOR = new Color(0, 0, 0); // Black for text (as in Employee_info)
+    private static final Color ACCENT_COLOR = new Color(0x7A, 0xB2, 0xB2); // #7AB2B2 (medium teal for buttons/headers)
+    private static final Color SECONDARY_COLOR = new Color(0xCD, 0xE8, 0xE5); // #CDE8E5 (light teal for input background)
 
-    update_patient_details(){
+    // Fonts (same as Employee_info)
+    private static final Font LABEL_FONT = new Font("Segoe UI", Font.BOLD, 14);
+    private static final Font INPUT_FONT = new Font("Segoe UI", Font.PLAIN, 14);
 
-        JPanel panel = new JPanel();
-        panel.setBounds(5,5,940,490);
-        panel.setBackground(new Color(63, 114, 175));
-        panel.setLayout(null);
-        add(panel);
+    // UI Components
+    private Choice patientChoice;
+    private JTextField roomTextField, inTimeTextField, amountTextField, pendingTextField;
 
-        ImageIcon imageIcon = new ImageIcon(ClassLoader.getSystemResource("icon/updated.png"));
-        Image image = imageIcon.getImage().getScaledInstance(300,300,Image.SCALE_DEFAULT);
-        ImageIcon imageIcon1 = new ImageIcon(image);
-        JLabel label = new JLabel(imageIcon1);
-        label.setBounds(500,60,300,300);
-        panel.add(label);
+    public update_patient_details() {
+        // Frame Setup
+        setTitle("Update Patient Details");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        getContentPane().setBackground(BACKGROUND_COLOR);
+        setLayout(new BorderLayout(10, 10));
 
-        JLabel label1 = new JLabel("Update Patient Details");
-        label1.setBounds(124,11,260,25);
-        label1.setFont(new Font("Tahoma",Font.BOLD,20));
-        label1.setForeground(Color.white);
-        panel.add(label1);
+        // Main Panel
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBackground(BACKGROUND_COLOR);
+        mainPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(PRIMARY_COLOR, 2),
+                BorderFactory.createEmptyBorder(20, 20, 20, 20)
+        ));
 
+        // Title Label
+        JLabel titleLabel = new JLabel("Update Patient Details", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        titleLabel.setForeground(TEXT_COLOR);
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        mainPanel.add(titleLabel, BorderLayout.NORTH);
 
-        JLabel label2 = new JLabel("Name :");
-        label2.setBounds(25,88,100,14);
-        label2.setFont(new Font("Tahoma",Font.PLAIN,14));
-        label2.setForeground(Color.white);
-        panel.add(label2);
+        // Form Panel (Left Side)
+        JPanel formPanel = createFormPanel();
+        mainPanel.add(formPanel, BorderLayout.WEST);
 
-        Choice choice = new Choice();
-        choice.setBounds(248,85,140,25);
-        panel.add(choice);
+        // Image Panel (Right Side)
+        JPanel imagePanel = createImagePanel();
+        mainPanel.add(imagePanel, BorderLayout.EAST);
 
+        add(mainPanel, BorderLayout.CENTER);
+
+        // Button Panel
+        JPanel buttonPanel = createButtonPanel();
+        add(buttonPanel, BorderLayout.SOUTH);
+
+        // Frame Styling
+        setSize(950, 500); // Match the size of the original
+        setLocationRelativeTo(null); // Center the window
+        setVisible(true);
+    }
+
+    private JPanel createFormPanel() {
+        JPanel panel = new JPanel(new GridLayout(5, 2, 10, 10));
+        panel.setBackground(BACKGROUND_COLOR);
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        panel.setPreferredSize(new Dimension(400, 300));
+
+        // Name Selection
+        JLabel nameLabel = createLabel("Name:");
+        patientChoice = new Choice();
+        patientChoice.setFont(INPUT_FONT);
+        patientChoice.setBackground(SECONDARY_COLOR);
+        patientChoice.setForeground(TEXT_COLOR);
+
+        // Populate patient names
         try {
-            conn c= new conn();
-            ResultSet resultSet = c.statement.executeQuery("select * from Patient_Info");
-            while (resultSet.next()){
-                choice.add(resultSet.getString("Name"));
+            conn connection = new conn();
+            ResultSet resultSet = connection.statement.executeQuery("select * from Patient_Info");
+            while (resultSet.next()) {
+                patientChoice.add(resultSet.getString("Name"));
             }
-
-        }catch (Exception e){
+            connection.statement.close();
+            connection.connection.close();
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        JLabel label3 = new JLabel("Room Number :");
-        label3.setBounds(25,129,100,14);
-        label3.setFont(new Font("Tahoma",Font.PLAIN,14));
-        label3.setForeground(Color.white);
-        panel.add(label3);
+        // Room Number
+        JLabel roomLabel = createLabel("Room Number:");
+        roomTextField = createTextField("");
 
-        JTextField textFieldR = new JTextField();
-        textFieldR.setBounds(248,129,140,20);
-        panel.add(textFieldR);
+        // In-Time
+        JLabel inTimeLabel = createLabel("In-Time:");
+        inTimeTextField = createTextField("");
 
-        JLabel label4 = new JLabel("In-Time  :");
-        label4.setBounds(25,174,100,14);
-        label4.setFont(new Font("Tahoma",Font.PLAIN,14));
-        label4.setForeground(Color.white);
-        panel.add(label4);
+        // Amount Paid
+        JLabel amountLabel = createLabel("Amount Paid (Rs):");
+        amountTextField = createTextField("");
 
-        JTextField textFieldINTIme = new JTextField();
-        textFieldINTIme.setBounds(248,174,140,20);
-        panel.add(textFieldINTIme);
+        // Pending Amount
+        JLabel pendingLabel = createLabel("Pending Amount (Rs):");
+        pendingTextField = createTextField("");
+        pendingTextField.setEditable(false); // Pending amount is calculated, not editable
 
-        JLabel label5 = new JLabel("Amount Paid (Rs) :");
-        label5.setBounds(25,216,150,14);
-        label5.setFont(new Font("Tahoma",Font.PLAIN,14));
-        label5.setForeground(Color.white);
-        panel.add(label5);
+        // Add components to panel
+        panel.add(nameLabel);
+        panel.add(patientChoice);
+        panel.add(roomLabel);
+        panel.add(roomTextField);
+        panel.add(inTimeLabel);
+        panel.add(inTimeTextField);
+        panel.add(amountLabel);
+        panel.add(amountTextField);
+        panel.add(pendingLabel);
+        panel.add(pendingTextField);
 
-        JTextField textFieldAmount = new JTextField();
-        textFieldAmount.setBounds(248,216,140,20);
-        panel.add(textFieldAmount);
-
-        JLabel label6 = new JLabel("Pending Amount (Rs) :");
-        label6.setBounds(25,261,150,14);
-        label6.setFont(new Font("Tahoma",Font.PLAIN,14));
-        label6.setForeground(Color.white);
-        panel.add(label6);
-
-        JTextField textFieldPending = new JTextField();
-        textFieldPending.setBounds(248,261,140,20);
-        panel.add(textFieldPending);
-
-        JButton check = new JButton("CHECK");
-        check.setBounds(281,378,89,23);
-        check.setBackground(new Color(17, 45, 78));
-        check.setForeground(Color.black);
-        panel.add(check);
-        check.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String id = choice.getSelectedItem();
-                String q = "select * from Patient_Info where Name = '"+id+"'";
-                try{
-                    conn c = new conn();
-                    ResultSet resultSet = c.statement.executeQuery(q);
-                    while (resultSet.next()){
-                        textFieldR.setText(resultSet.getString("Room_Number"));
-                        textFieldINTIme.setText(resultSet.getString("Time"));
-                        textFieldAmount.setText(resultSet.getString("Deposite"));
-                    }
-
-                    ResultSet resultSet1 = c.statement.executeQuery("select* from room where room_no = '"+textFieldR.getText()+"'");
-                    while (resultSet1.next()){
-                        String price = resultSet1.getString("Price");
-                        int amountPaid = Integer.parseInt(price) - Integer.parseInt(textFieldAmount.getText());
-                        textFieldPending.setText(""+amountPaid);
-                    }
-
-                }catch (Exception E){
-                    E.printStackTrace();
-                }
-            }
-        });
-
-        JButton update = new JButton("UPDATE");
-        update.setBounds(56,378,89,23);
-        update.setBackground(new Color(17, 45, 78));
-        update.setForeground(Color.black);
-        panel.add(update);
-        update.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    conn c = new conn();
-                    String q = choice.getSelectedItem();
-                    String room = textFieldR.getText();
-                    String time = textFieldINTIme.getText();
-                    String amount = textFieldAmount.getText();
-                    c.statement.executeUpdate("update Patient_Info set Room_Number = '"+room+"', Time = '"+time+"', Deposite = '"+amount+"' where name = '"+q+"'" );
-                    JOptionPane.showMessageDialog(null,"Updated Successfully");
-                    setVisible(false);
-                }catch (Exception E){
-                    E.printStackTrace();
-                }
-            }
-        });
-
-        JButton back = new JButton("BACK");
-        back.setBounds(168,378,89,23);
-        back.setBackground(new Color(17, 45, 78));
-        back.setForeground(Color.black);
-        panel.add(back);
-        back.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-            }
-        });
-
-        setUndecorated(true);
-        setSize(950,500);
-        setLayout(null);
-        setLocation(400,250);
-        setVisible(true);
-
+        return panel;
     }
+
+    private JPanel createImagePanel() {
+        JPanel panel = new JPanel();
+        panel.setBackground(BACKGROUND_COLOR);
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // Image loading
+        ImageIcon imageIcon = new ImageIcon(ClassLoader.getSystemResource("icon/updated.png"));
+        Image image = imageIcon.getImage().getScaledInstance(300, 300, Image.SCALE_DEFAULT);
+        ImageIcon imageIcon1 = new ImageIcon(image);
+        JLabel label = new JLabel(imageIcon1);
+        panel.add(label);
+
+        return panel;
+    }
+
+    private JPanel createButtonPanel() {
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        buttonPanel.setBackground(BACKGROUND_COLOR);
+
+        // Check Button
+        JButton checkButton = createStyledButton("CHECK", ACCENT_COLOR, TEXT_COLOR);
+        checkButton.addActionListener(e -> {
+            String patientName = patientChoice.getSelectedItem();
+            String query = "select * from Patient_Info where Name = '" + patientName + "'";
+            try {
+                conn connection = new conn();
+                ResultSet resultSet = connection.statement.executeQuery(query);
+
+                if (resultSet.next()) {
+                    roomTextField.setText(resultSet.getString("Room_Number"));
+                    inTimeTextField.setText(resultSet.getString("Time"));
+                    amountTextField.setText(resultSet.getString("Deposite"));
+                }
+
+                ResultSet roomResultSet = connection.statement.executeQuery(
+                        "select * from room where room_no = '" + roomTextField.getText() + "'"
+                );
+
+                if (roomResultSet.next()) {
+                    String price = roomResultSet.getString("Price");
+                    int amountPaid = Integer.parseInt(price) - Integer.parseInt(amountTextField.getText());
+                    pendingTextField.setText("" + amountPaid);
+                }
+
+                connection.statement.close();
+                connection.connection.close();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        // Update Button
+        JButton updateButton = createStyledButton("UPDATE", ACCENT_COLOR, TEXT_COLOR);
+        updateButton.addActionListener(e -> {
+            try {
+                conn connection = new conn();
+                String patientName = patientChoice.getSelectedItem();
+                String updateQuery = "update Patient_Info set Room_Number = '" + roomTextField.getText() +
+                        "', Time = '" + inTimeTextField.getText() +
+                        "', Deposite = '" + amountTextField.getText() +
+                        "' where name = '" + patientName + "'";
+
+                connection.statement.executeUpdate(updateQuery);
+                JOptionPane.showMessageDialog(null, "Updated Successfully");
+                setVisible(false);
+                connection.statement.close();
+                connection.connection.close();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        // Back Button
+        JButton backButton = createStyledButton("BACK", SECONDARY_COLOR, TEXT_COLOR);
+        backButton.addActionListener(e -> setVisible(false));
+
+        buttonPanel.add(updateButton);
+        buttonPanel.add(backButton);
+        buttonPanel.add(checkButton);
+
+        return buttonPanel;
+    }
+
+    private JLabel createLabel(String text) {
+        JLabel label = new JLabel(text);
+        label.setFont(LABEL_FONT);
+        label.setForeground(TEXT_COLOR);
+        return label;
+    }
+
+    private JTextField createTextField(String placeholder) {
+        JTextField textField = new JTextField(placeholder);
+        textField.setBackground(SECONDARY_COLOR);
+        textField.setForeground(TEXT_COLOR);
+        textField.setFont(INPUT_FONT);
+        textField.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(PRIMARY_COLOR),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)
+        ));
+        return textField;
+    }
+
+    private JButton createStyledButton(String text, Color bgColor, Color fgColor) {
+        JButton button = new JButton(text);
+        button.setBackground(bgColor);
+        button.setForeground(fgColor);
+        button.setFont(LABEL_FONT);
+        button.setFocusPainted(false);
+        button.setPreferredSize(new Dimension(120, 35));
+        return button;
+    }
+
     public static void main(String[] args) {
-        new update_patient_details();
+        SwingUtilities.invokeLater(() -> new update_patient_details());
     }
 }

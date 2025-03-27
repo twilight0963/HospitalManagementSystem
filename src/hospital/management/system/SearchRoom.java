@@ -1,8 +1,8 @@
 package hospital.management.system;
 
 import net.proteanit.sql.DbUtils;
-
 import javax.swing.*;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,111 +10,157 @@ import java.sql.ResultSet;
 
 public class SearchRoom extends JFrame {
 
-    Choice choice;
-    JTable table;
-    SearchRoom(){
-        JPanel panel = new JPanel();
-        panel.setBounds(5,5,690,490);
-        panel.setBackground(new Color(63, 114, 175));
-        panel.setLayout(null);
-        add(panel);
+    // Theme Colors (from Employee_info)
+    private static final Color PRIMARY_COLOR = new Color(0xEE, 0xF7, 0xFF); // #EEF7FF (lightest blue for borders)
+    private static final Color BACKGROUND_COLOR = new Color(0x4D, 0x86, 0x9C); // #4D869C (darkest teal for background)
+    private static final Color TEXT_COLOR = new Color(0, 0, 0); // White for text
+    private static final Color ACCENT_COLOR = new Color(0x7A, 0xB2, 0xB2); // #7AB2B2 (medium teal for buttons/headers)
+    private static final Color SECONDARY_COLOR = new Color(0xCD, 0xE8, 0xE5); // #CDE8E5 (light teal for table/input background)
 
-        JLabel For = new JLabel("Search For Room");
-        For.setBounds(250,11,186,31);
-        For.setForeground(new Color(17, 45, 78));
-        For.setFont(new Font("Tahoma",Font.BOLD,20));
-        panel.add(For);
+    // Fonts (retaining from Employee_info)
+    private static final Font LABEL_FONT = new Font("Segoe UI", Font.BOLD, 14);
+    private static final Font INPUT_FONT = new Font("Segoe UI", Font.PLAIN, 14);
 
-        JLabel status = new JLabel("Status :");
-        status.setBounds(70,70,80,20);
-        status.setForeground(Color.white);
-        status.setFont(new Font("Tahoma",Font.BOLD,14));
-        panel.add(status);
+    private Choice choice;
+    private JTable table;
 
-        choice =new Choice();
-        choice.setBounds(170,70,120,20);
-        choice.add("Available");
-        choice.add("Occupied");
-        panel.add(choice);
+    SearchRoom() {
+        // Frame Setup
+        setTitle("Search Room");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        getContentPane().setBackground(BACKGROUND_COLOR);
+        setLayout(new BorderLayout(10, 10));
 
-        table = new JTable();
-        table.setBounds(0,187,700,210);
-        table.setBackground(new Color(63, 114, 175));
-        table.setForeground(Color.white);
-        panel.add(table);
+        // Main Panel
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBackground(BACKGROUND_COLOR);
+        mainPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(PRIMARY_COLOR, 2),
+                BorderFactory.createEmptyBorder(20, 20, 20, 20)
+        ));
 
-        try {
-            conn c = new conn();
-            String q = "select * from room";
-            ResultSet resultSet = c.statement.executeQuery(q);
-            table.setModel(DbUtils.resultSetToTableModel(resultSet));
+        // Table Panel
+        JPanel tablePanel = createTablePanel();
+        mainPanel.add(tablePanel, BorderLayout.CENTER);
 
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        // Input and Button Panel
+        JPanel inputPanel = createInputPanel();
+        mainPanel.add(inputPanel, BorderLayout.NORTH);
 
-        JLabel Roomno = new JLabel("Room Number");
-        Roomno.setBounds(23,162,150,20);
-        Roomno.setForeground(Color.white);
-        Roomno.setFont(new Font("Tahoma",Font.BOLD,14));
-        panel.add(Roomno);
+        add(mainPanel, BorderLayout.CENTER);
 
-        JLabel available = new JLabel("Availability");
-        available.setBounds(175,162,150,20);
-        available.setForeground(Color.white);
-        available.setFont(new Font("Tahoma",Font.BOLD,14));
-        panel.add(available);
+        // Button Panel
+        JPanel buttonPanel = createButtonPanel();
+        add(buttonPanel, BorderLayout.SOUTH);
 
-        JLabel price = new JLabel("Price");
-        price.setBounds(458,162,150,20);
-        price.setForeground(Color.white);
-        price.setFont(new Font("Tahoma",Font.BOLD,14));
-        panel.add(price);
+        // Frame Styling
+        setSize(700, 500);
+        setLocationRelativeTo(null);
 
-        JLabel Bed = new JLabel("Bed Type");
-        Bed.setBounds(580,162,150,20);
-        Bed.setForeground(Color.white);
-        Bed.setFont(new Font("Tahoma",Font.BOLD,14));
-        panel.add(Bed);
-
-        JButton Search = new JButton("Search");
-        Search.setBounds(200,420,120,25);
-        Search.setBackground(new Color(17, 45, 78));
-        Search.setForeground(Color.black);
-        panel.add(Search);
-        Search.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String q = "select * from Room where Availability = '"+choice.getSelectedItem()+"'";
-                try {
-                    conn c = new conn();
-                    ResultSet resultSet = c.statement.executeQuery(q);
-                    table.setModel(DbUtils.resultSetToTableModel(resultSet));
-                }catch (Exception E){
-                    E.printStackTrace();
-                }
-            }
-        });
-
-        JButton Back = new JButton("Back");
-        Back.setBounds(380,420,120,25);
-        Back.setBackground(new Color(17, 45, 78));
-        Back.setForeground(Color.black);
-        panel.add(Back);
-        Back.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-            }
-        });
-
-
-        setUndecorated(true);
-        setSize(700,500);
-        setLayout(null);
-        setLocation(450,250);
         setVisible(true);
     }
+
+    private JPanel createTablePanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBackground(BACKGROUND_COLOR);
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // Table Setup
+        table = new JTable();
+        customizeTable(table);
+
+        // Load Data
+        loadRoomData();
+
+        // Scrollpane for Table
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.getViewport().setBackground(SECONDARY_COLOR);
+        panel.add(scrollPane, BorderLayout.CENTER);
+
+        return panel;
+    }
+
+    private void customizeTable(JTable table) {
+        JTableHeader header = table.getTableHeader();
+        header.setBackground(ACCENT_COLOR);
+        header.setForeground(TEXT_COLOR);
+        header.setFont(LABEL_FONT);
+
+        table.setBackground(SECONDARY_COLOR);
+        table.setForeground(TEXT_COLOR);
+        table.setFont(INPUT_FONT);
+        table.setRowHeight(30);
+    }
+
+    private void loadRoomData() {
+        conn connection = null;
+        try {
+            connection = new conn();
+            String query = "SELECT * FROM room";
+            ResultSet resultSet = connection.statement.executeQuery(query);
+            table.setModel(DbUtils.resultSetToTableModel(resultSet));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private JPanel createInputPanel() {
+        JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        inputPanel.setBackground(BACKGROUND_COLOR);
+        inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+
+        JLabel statusLabel = new JLabel("Status:");
+        statusLabel.setFont(LABEL_FONT);
+        statusLabel.setForeground(TEXT_COLOR);
+
+        choice = new Choice();
+        choice.add("Available");
+        choice.add("Occupied");
+
+        inputPanel.add(statusLabel);
+        inputPanel.add(choice);
+
+        return inputPanel;
+    }
+
+    private JPanel createButtonPanel() {
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        buttonPanel.setBackground(BACKGROUND_COLOR);
+
+        JButton searchButton = createStyledButton("Search", ACCENT_COLOR, TEXT_COLOR);
+        searchButton.addActionListener(e -> searchRooms());
+
+        JButton backButton = createStyledButton("Back", SECONDARY_COLOR, TEXT_COLOR);
+        backButton.addActionListener(e -> setVisible(false));
+
+        buttonPanel.add(searchButton);
+        buttonPanel.add(backButton);
+
+        return buttonPanel;
+    }
+
+    private JButton createStyledButton(String text, Color bgColor, Color fgColor) {
+        JButton button = new JButton(text);
+        button.setBackground(bgColor);
+        button.setForeground(fgColor);
+        button.setFont(LABEL_FONT);
+        button.setFocusPainted(false);
+        button.setPreferredSize(new Dimension(120, 35));
+        return button;
+    }
+
+    private void searchRooms() {
+        conn connection = null;
+        try {
+            connection = new conn();
+            String query = "SELECT * FROM room WHERE Availability = '" + choice.getSelectedItem() + "'";
+            ResultSet resultSet = connection.statement.executeQuery(query);
+            table.setModel(DbUtils.resultSetToTableModel(resultSet));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         new SearchRoom();
     }

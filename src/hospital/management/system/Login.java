@@ -12,7 +12,7 @@ public class Login extends JFrame implements ActionListener {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton loginButton, cancelButton;
-    private final Color PRIMARY_COLOR = new Color(41, 128, 185); // Modern blue
+    private final Color PRIMARY_COLOR = new Color(77, 134, 156); // Modern blue
     private final Color ACCENT_COLOR = new Color(231, 76, 60);  // Modern red
     private final Color BACKGROUND_COLOR = new Color(245, 245, 245);
     private final Color TEXT_COLOR = new Color(52, 73, 94);

@@ -1,100 +1,161 @@
 package hospital.management.system;
 
 import net.proteanit.sql.DbUtils;
-
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ALL_Patient_Info extends JFrame {
-    ALL_Patient_Info(){
-        JPanel panel = new JPanel();
-        panel.setBounds(5,5,890,590);
-        panel.setBackground(new Color(63, 114, 175));
-        panel.setForeground(new Color(17, 45, 78));
-        panel.setLayout(null);
-        add(panel);
+    // Logger
+    private static final Logger LOGGER = Logger.getLogger(ALL_Patient_Info.class.getName());
 
-        JTable table = new JTable();
-        table.setBounds(10,40,900,450);
-        table.setBackground(new Color(63, 114, 175));
-        table.setForeground(Color.WHITE);
+    // Color Constants as specified
+    private static final Color PRIMARY_COLOR = new Color(0xEE, 0xF7, 0xFF); // #EEF7FF (lightest blue for borders)
+    private static final Color BACKGROUND_COLOR = new Color(0x4D, 0x86, 0x9C); // #4D869C (darkest teal for background)
+    private static final Color TEXT_COLOR = new Color(0, 0, 0); // Black for text
+    private static final Color ACCENT_COLOR = new Color(0x7A, 0xB2, 0xB2); // #7AB2B2 (medium teal for buttons/headers)
+    private static final Color SECONDARY_COLOR = new Color(0xCD, 0xE8, 0xE5); // #CDE8E5 (light teal for table/input background)
 
-        table.setFont(new Font("Tahoma",Font.BOLD,12));
-        panel.add(table);
+    // UI Components
+    private JTable table;
 
-        try{
-            conn c = new conn();
-            String q = "select * from Patient_Info";
-            ResultSet resultSet = c.statement.executeQuery(q);
+    public ALL_Patient_Info() {
+        // Frame Setup
+        setTitle("Patient Information");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        getContentPane().setBackground(BACKGROUND_COLOR);
+        setLayout(new BorderLayout(10, 10));
+
+        // Main Panel with Table
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBackground(BACKGROUND_COLOR);
+
+        // Table Panel
+        JPanel tablePanel = createTablePanel();
+        mainPanel.add(tablePanel, BorderLayout.CENTER);
+
+        // Button Panel
+        JPanel buttonPanel = createButtonPanel();
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        add(mainPanel, BorderLayout.CENTER);
+
+        // Frame Styling
+        setSize(1000, 650); // Updated to match Room class size
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    private JPanel createTablePanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBackground(BACKGROUND_COLOR);
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        // Table Setup
+        table = new JTable();
+        customizeTable(table);
+
+        // Load Data
+        loadPatientData();
+
+        // Scrollpane for Table
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.getViewport().setBackground(BACKGROUND_COLOR);
+        scrollPane.setBorder(BorderFactory.createLineBorder(PRIMARY_COLOR)); // #EEF7FF for border
+        panel.add(scrollPane, BorderLayout.CENTER);
+
+        return panel;
+    }
+
+    private void customizeTable(JTable table) {
+        // Table Header Styling
+        JTableHeader header = table.getTableHeader();
+        header.setBackground(ACCENT_COLOR); // #7AB2B2 for header background
+        header.setForeground(TEXT_COLOR); // Black for header text
+        header.setFont(new Font("Segoe UI", Font.BOLD, 14));
+
+        // Table Body Styling
+        table.setBackground(SECONDARY_COLOR); // #CDE8E5 for table background
+        table.setForeground(TEXT_COLOR); // Black for table text
+        table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        table.setRowHeight(30);
+
+        // Center Align Cell Contents
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        centerRenderer.setForeground(TEXT_COLOR); // Black for table text
+        table.setDefaultRenderer(Object.class, centerRenderer);
+    }
+
+    private void loadPatientData() {
+        conn connection = null;
+        try {
+            connection = new conn();
+            String query = "SELECT * FROM Patient_Info";
+            ResultSet resultSet = connection.statement.executeQuery(query);
             table.setModel(DbUtils.resultSetToTableModel(resultSet));
-
-        }catch (Exception e){
-            e.printStackTrace();
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error loading patient data", e);
+            JOptionPane.showMessageDialog(this,
+                    "Error loading patient data: " + e.getMessage(),
+                    "Database Error",
+                    JOptionPane.ERROR_MESSAGE);
+        } finally {
+            // Close the statement and connection directly since conn class doesn't have closeConnection()
+            if (connection != null) {
+                try {
+                    if (connection.statement != null && !connection.statement.isClosed()) {
+                        connection.statement.close();
+                    }
+                } catch (SQLException e) {
+                    LOGGER.log(Level.SEVERE, "Error closing statement", e);
+                }
+                try {
+                    if (connection.connection != null && !connection.connection.isClosed()) {
+                        connection.connection.close();
+                    }
+                } catch (SQLException e) {
+                    LOGGER.log(Level.SEVERE, "Error closing connection", e);
+                }
+            }
         }
+    }
 
-        JLabel label1 = new JLabel("ID");
-        label1.setBounds(31,11,100,14);
-        label1.setFont(new Font("Tahoma",Font.BOLD,14));
-        panel.add(label1);
+    private JPanel createButtonPanel() {
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        buttonPanel.setBackground(BACKGROUND_COLOR);
 
-        JLabel label2 = new JLabel("Number");
-        label2.setBounds(150,11,100,14);
-        label2.setFont(new Font("Tahoma",Font.BOLD,14));
-        panel.add(label2);
-
-        JLabel label3 = new JLabel("Name");
-        label3.setBounds(270,11,100,14);
-        label3.setFont(new Font("Tahoma",Font.BOLD,14));
-        panel.add(label3);
-
-        JLabel label4 = new JLabel("Gender");
-        label4.setBounds(360,11,100,14);
-        label4.setFont(new Font("Tahoma",Font.BOLD,14));
-        panel.add(label4);
-
-        JLabel label5 = new JLabel("Disease");
-        label5.setBounds(480,11,100,14);
-        label5.setFont(new Font("Tahoma",Font.BOLD,14));
-        panel.add(label5);
-
-        JLabel label6 = new JLabel("Room");
-        label6.setBounds(600,11,100,14);
-        label6.setFont(new Font("Tahoma",Font.BOLD,14));
-        panel.add(label6);
-
-        JLabel label7 = new JLabel("Time");
-        label7.setBounds(700,11,100,14);
-        label7.setFont(new Font("Tahoma",Font.BOLD,14));
-        panel.add(label7);
-
-        JLabel label8 = new JLabel("Deposit");
-        label8.setBounds(800,11,100,14);
-        label8.setFont(new Font("Tahoma",Font.BOLD,14));
-        panel.add(label8);
-
-        JButton button = new JButton("BACK");
-        button.setBounds(450,510,120,30);
-        button.setBackground(new Color(17, 45, 78));
-        button.setForeground(Color.black);
-        panel.add(button);
-        button.addActionListener(new ActionListener() {
-            @Override
+        // Back Button
+        JButton backButton = new JButton("Back");
+        styleButton(backButton);
+        backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                setVisible(false);
+                dispose();
             }
         });
 
-        setUndecorated(true);
-        setSize(900,600);
-        setLayout(null);
-        setLocation(300,200);
-        setVisible(true);
-
+        buttonPanel.add(backButton);
+        return buttonPanel;
     }
+
+    private void styleButton(JButton button) {
+        button.setBackground(ACCENT_COLOR); // #7AB2B2 for button background
+        button.setForeground(TEXT_COLOR); // Black for button text
+        button.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        button.setFocusPainted(false);
+        button.setBorderPainted(false);
+        button.setPreferredSize(new Dimension(150, 40));
+    }
+
     public static void main(String[] args) {
-        new ALL_Patient_Info();
+        // Use SwingUtilities to ensure thread safety
+        SwingUtilities.invokeLater(() -> new ALL_Patient_Info());
     }
 }

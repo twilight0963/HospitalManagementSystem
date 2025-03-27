@@ -8,211 +8,220 @@ import java.sql.ResultSet;
 import java.util.Date;
 
 public class NEW_PATIENT extends JFrame implements ActionListener {
-    JComboBox comboBox;
+    // Color palette from the provided theme
+    private static final Color PRIMARY_COLOR = new Color(77, 134, 156); // #4D869C (deeper blue-teal for accents)
+    private static final Color BACKGROUND_COLOR = new Color(205, 232, 229); // #CDE8E5 (light mint green for background)
+    private static final Color TEXT_COLOR = new Color(77, 134, 156); // #4D869C (deeper blue-teal for text)
+    private static final Color SECONDARY_COLOR = new Color(122, 178, 178); // #7AB2B2 (muted teal for secondary elements)
+
+    // Fonts (unchanged)
+    private static final Font TITLE_FONT = new Font("Segoe UI", Font.BOLD, 22);
+    private static final Font LABEL_FONT = new Font("Segoe UI", Font.BOLD, 14);
+    private static final Font INPUT_FONT = new Font("Segoe UI", Font.PLAIN, 14);
+
+    JComboBox<String> comboBox;
     JTextField textFieldNumber, textName, textFieldDisease, textFieldDeposite;
     JRadioButton r1, r2;
     Choice c1;
     JLabel date;
-    JButton b1 ,b2;
+    JButton b1, b2;
 
-    NEW_PATIENT(){
-
+    NEW_PATIENT() {
+        // Modern panel setup
         JPanel panel = new JPanel();
-        panel.setBounds(5,5,840,540);
-        panel.setBackground(new Color(63, 114, 175));
+        panel.setBounds(5, 5, 840, 540);
+        panel.setBackground(BACKGROUND_COLOR);
         panel.setLayout(null);
         add(panel);
 
+        // Update panel with a softer, more modern look
+        panel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(SECONDARY_COLOR, 2), // #7AB2B2 for border
+                BorderFactory.createEmptyBorder(20, 20, 20, 20)
+        ));
+
+        // Patient image with smoother scaling
         ImageIcon imageIcon = new ImageIcon(ClassLoader.getSystemResource("icon/patient.png"));
-        Image image = imageIcon.getImage().getScaledInstance(200,200,Image.SCALE_DEFAULT);
+        Image image = imageIcon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
         ImageIcon imageIcon1 = new ImageIcon(image);
         JLabel label = new JLabel(imageIcon1);
-        label.setBounds(550,150,200,200);
+        label.setBounds(550, 150, 200, 200);
         panel.add(label);
 
-        JLabel labelName = new JLabel("NEW PATIENT FORM");
-        labelName.setBounds(118,11,260,53);
-        labelName.setFont(new Font("Tahoma",Font.BOLD,20));
+        // Title
+        JLabel labelName = new JLabel("NEW PATIENT REGISTRATION");
+        labelName.setBounds(118, 11, 400, 53);
+        labelName.setFont(TITLE_FONT);
+        labelName.setForeground(PRIMARY_COLOR); // #4D869C for title
         panel.add(labelName);
 
-        JLabel labelID = new JLabel("ID :");
-        labelID.setBounds(35,76,200,14);
-        labelID.setFont(new Font("Tahoma",Font.BOLD,14));
-        labelID.setForeground(Color.black);
-        panel.add(labelID);
+        // Method to standardize label creation
+        createLabel(panel, "ID :", 35, 76, labelID -> {
+            labelID.setFont(LABEL_FONT);
+            labelID.setForeground(TEXT_COLOR);
+        });
 
-        comboBox = new JComboBox(new String[] {"Aadhar Card","Voter Id","Driving License"});
-        comboBox.setBounds(271,73,150,20);
-        comboBox.setBackground(new Color(3,45,48));
-        comboBox.setForeground(Color.white);
-        comboBox.setFont(new Font("Tahoma",Font.BOLD,14));
+        // Modernized combo box
+        comboBox = new JComboBox<>(new String[]{"Aadhar Card", "Voter Id", "Driving License"});
+        comboBox.setBounds(271, 73, 250, 30);
+        comboBox.setFont(INPUT_FONT);
+        comboBox.setBackground(new Color(238, 255, 255)); // #EEFFFF for input background
+        comboBox.setForeground(TEXT_COLOR);
         panel.add(comboBox);
 
-        JLabel labelNumber = new JLabel("Number :");
-        labelNumber.setBounds(35,111,200,14);
-        labelNumber.setFont(new Font("Tahoma",Font.BOLD,14));
-        labelNumber.setForeground(Color.white);
-        panel.add(labelNumber);
+        // Consistent label and field creation
+        createLabelAndField(panel, "Number :", 35, 111, textFieldNumber = new JTextField());
+        createLabelAndField(panel, "Name :", 35, 151, textName = new JTextField());
 
-        textFieldNumber = new JTextField();
-        textFieldNumber.setBounds(271,111,150,20);
-        panel.add(textFieldNumber);
+        // Gender section
+        createLabel(panel, "Gender :", 35, 191, labelGender -> {
+            labelGender.setFont(LABEL_FONT);
+            labelGender.setForeground(TEXT_COLOR);
+        });
 
-        //name
-        JLabel labelName1 = new JLabel("Name :");
-        labelName1.setBounds(35,151,200,14);
-        labelName1.setFont(new Font("Tahoma",Font.BOLD,14));
-        labelName1.setForeground(Color.white);
-        panel.add(labelName1);
+        // Radio buttons
+        ButtonGroup genderGroup = new ButtonGroup();
+        r1 = createRadioButton(panel, "Male", 271, 191, genderGroup);
+        r2 = createRadioButton(panel, "Female", 350, 191, genderGroup);
 
-        textName = new JTextField();
-        textName.setBounds(271,151,150,20);
-        panel.add(textName);
+        // Remaining fields
+        createLabelAndField(panel, "Disease :", 35, 231, textFieldDisease = new JTextField());
 
+        // Room selection
+        createLabel(panel, "Room :", 35, 274, labelRoom -> {
+            labelRoom.setFont(LABEL_FONT);
+            labelRoom.setForeground(TEXT_COLOR);
+        });
 
-        //gender
-        JLabel labelGender = new JLabel("Gender :");
-        labelGender.setBounds(35,191,200,14);
-        labelGender.setFont(new Font("Tahoma",Font.BOLD,14));
-        labelGender.setForeground(Color.white);
-        panel.add(labelGender);
-
-        //radiobutton
-        r1 = new JRadioButton("Male");
-        r1.setFont(new Font("Tahoma",Font.BOLD,14));
-        r1.setForeground(Color.white);
-        r1.setBackground(new Color(63, 114, 175));
-        r1.setBounds(271,191,80,15);
-        panel.add(r1);
-
-        r2 = new JRadioButton("Female");
-        r2.setFont(new Font("Tahoma",Font.BOLD,14));
-        r2.setForeground(Color.white);
-        r2.setBackground(new Color(63, 114, 175));
-        r2.setBounds(350,191,80,15);
-        panel.add(r2);
-
-        JLabel labelDisease = new JLabel("Disease :");
-        labelDisease.setBounds(35,231,200,14);
-        labelDisease.setFont(new Font("Tahoma",Font.BOLD,14));
-        labelDisease.setForeground(Color.white);
-        panel.add(labelDisease);
-
-        textFieldDisease = new JTextField();
-        textFieldDisease.setBounds(271,231,150,20);
-        panel.add(textFieldDisease);
-
-        JLabel labelRoom = new JLabel("Room :");
-        labelRoom.setBounds(35,274,200,14);
-        labelRoom.setFont(new Font("Tahoma",Font.BOLD,14));
-        labelRoom.setForeground(Color.white);
-        panel.add(labelRoom);
-
-        //room choice
         c1 = new Choice();
         try {
             conn c = new conn();
             ResultSet resultSet = c.statement.executeQuery("select * from Room");
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 c1.add(resultSet.getString("room_no"));
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        c1.setBounds(271,274,150,20);
-        c1.setFont(new Font("Tahoma", Font.BOLD, 14));
-        c1.setForeground(Color.WHITE);
-        c1.setBackground(new Color(3,45,48));
+        c1.setBounds(271, 274, 250, 30);
+        c1.setFont(INPUT_FONT);
+        c1.setBackground(new Color(238, 255, 255)); // #EEFFFF for input background
         panel.add(c1);
 
-        //Time label
-        JLabel labelDate = new JLabel("Time :");
-        labelDate.setBounds(35,316,200,14);
-        labelDate.setFont(new Font("Tahoma",Font.BOLD,14));
-        labelDate.setForeground(Color.white);
-        panel.add(labelDate);
+        // Time display
+        createLabel(panel, "Time :", 35, 316, labelDate -> {
+            labelDate.setFont(LABEL_FONT);
+            labelDate.setForeground(TEXT_COLOR);
+        });
 
         Date date1 = new Date();
-
-        date = new JLabel(""+date1);
-        date.setBounds(271,316,250,14);
-        date.setForeground(Color.white);
-        date.setFont(new Font("Tahoma",Font.BOLD,14));
+        date = new JLabel("" + date1);
+        date.setBounds(271, 316, 250, 30);
+        date.setForeground(TEXT_COLOR);
+        date.setFont(INPUT_FONT);
         panel.add(date);
 
-        JLabel labelDeposite = new JLabel("Deposit :");
-        labelDeposite.setBounds(35,359,200,17);
-        labelDeposite.setFont(new Font("Tahoma",Font.BOLD,14));
-        labelDeposite.setForeground(Color.white);
-        panel.add(labelDeposite);
+        // Deposit field
+        createLabelAndField(panel, "Deposit :", 35, 359, textFieldDeposite = new JTextField());
 
-        textFieldDeposite = new JTextField();
-        textFieldDeposite.setBounds(271,359,150,20);
-        panel.add(textFieldDeposite);
+        // Buttons
+        b1 = createStyledButton(panel, "ADD", 100, 430, SECONDARY_COLOR, Color.WHITE); // #7AB2B2 for ADD button
+        b2 = createStyledButton(panel, "Back", 260, 430, new Color(238, 255, 255), PRIMARY_COLOR); // #EEFFFF and #4D869C for Back button
 
-        b1 = new JButton("ADD");
-        b1.setBounds(100,430,120,30);
-        b1.setForeground(Color.black);
-        b1.setBackground(Color.white);
-        b1.addActionListener(this);
-        panel.add(b1);
-
-        b2 = new JButton("Back");
-        b2.setBounds(260,430,120,30);
-        b2.setForeground(Color.black);
-        b2.setBackground(Color.white);
-        b2.addActionListener(this);
-        panel.add(b2);
-
-        setUndecorated(true);
-        setSize(850,550);
-        setLayout(null);
-        setLocation(300,250);
+        // Frame settings
+        setUndecorated(false);
+        setSize(850, 550);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
+    }
 
+    // Helper method to create labels with custom styling
+    private void createLabel(JPanel panel, String text, int x, int y,
+                             java.util.function.Consumer<JLabel> styler) {
+        JLabel label = new JLabel(text);
+        label.setBounds(x, y, 200, 14);
+        styler.accept(label);
+        panel.add(label);
+    }
+
+    // Helper method to create labels and text fields together
+    private void createLabelAndField(JPanel panel, String labelText,
+                                     int labelX, int labelY, JTextField textField) {
+        createLabel(panel, labelText, labelX, labelY, label -> {
+            label.setFont(LABEL_FONT);
+            label.setForeground(TEXT_COLOR);
+        });
+
+        textField.setBounds(271, labelY, 250, 30);
+        textField.setFont(INPUT_FONT);
+        textField.setBackground(new Color(238, 255, 255)); // #EEFFFF for input background
+        panel.add(textField);
+    }
+
+    // Create radio buttons
+    private JRadioButton createRadioButton(JPanel panel, String text,
+                                           int x, int y, ButtonGroup group) {
+        JRadioButton radioButton = new JRadioButton(text);
+        radioButton.setBounds(x, y, 80, 30);
+        radioButton.setFont(INPUT_FONT);
+        radioButton.setBackground(BACKGROUND_COLOR);
+        radioButton.setForeground(TEXT_COLOR);
+        group.add(radioButton);
+        panel.add(radioButton);
+        return radioButton;
+    }
+
+    // Create styled buttons
+    private JButton createStyledButton(JPanel panel, String text,
+                                       int x, int y, Color bgColor, Color fgColor) {
+        JButton button = new JButton(text);
+        button.setBounds(x, y, 120, 35);
+        button.setBackground(bgColor);
+        button.setForeground(fgColor);
+        button.setFont(LABEL_FONT);
+        button.setFocusPainted(false);
+        button.addActionListener(this);
+        panel.add(button);
+        return button;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == b1){
+        if (e.getSource() == b1) {
             conn c = new conn();
             String radioBTN = null;
-            if (r1.isSelected()){
+            if (r1.isSelected()) {
                 radioBTN = "Male";
-            }else if (r2.isSelected()){
+            } else if (r2.isSelected()) {
                 radioBTN = "Female";
             }
-            String s1 = (String)comboBox.getSelectedItem();
-            String s2 =  textFieldNumber.getText();
-            String s3 =  textName.getText();
-            String s4 =  radioBTN;
-            String s5 =  textFieldDisease.getText();
-            String s6 =  c1.getSelectedItem();
-            String s7 =  date.getText();
+            String s1 = (String) comboBox.getSelectedItem();
+            String s2 = textFieldNumber.getText();
+            String s3 = textName.getText();
+            String s4 = radioBTN;
+            String s5 = textFieldDisease.getText();
+            String s6 = c1.getSelectedItem();
+            String s7 = date.getText();
             String s8 = textFieldDeposite.getText();
 
             try {
-
-                String q ="insert into Patient_Info values ('"+s1+"', '"+s2+"','"+s3+"','"+s4+"', '"+s5+"', '"+s6+"', '"+s7+"', '"+s8+"')";
-                String q1 = "update room set Availability = 'Occupied' where room_no = "+s6;
+                String q = "insert into Patient_Info values ('" + s1 + "', '" + s2 + "','" + s3 + "','" + s4 + "', '" + s5 + "', '" + s6 + "', '" + s7 + "', '" + s8 + "')";
+                String q1 = "update room set Availability = 'Occupied' where room_no = " + s6;
                 c.statement.executeUpdate(q);
                 c.statement.executeUpdate(q1);
-                JOptionPane.showMessageDialog(null, "added Successfully");
+                JOptionPane.showMessageDialog(null, "Added Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                 setVisible(false);
-
-            }catch (Exception E) {
+            } catch (Exception E) {
                 E.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Error Adding Patient", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        }else {
+        } else {
             setVisible(false);
         }
-
-
     }
 
     public static void main(String[] args) {
-        new NEW_PATIENT();
+        SwingUtilities.invokeLater(() -> new NEW_PATIENT());
     }
-
-
 }

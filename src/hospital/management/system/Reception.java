@@ -9,11 +9,11 @@ import java.awt.event.MouseEvent;
 public class Reception extends JFrame {
 
     // Theme colors
-    private final Color SIDEBAR_COLOR = new Color(48, 56, 65); // Dark Gray-Blue
-    private final Color SIDEBAR_HOVER_COLOR = new Color(69, 79, 91);
-    private final Color MAIN_BACKGROUND_COLOR = new Color(245, 247, 249); // Light Gray
-    private final Color TEXT_COLOR = Color.WHITE;
-    private final Color PRIMARY_COLOR = new Color(63, 81, 181); // Material Design Blue
+    private final Color SIDEBAR_COLOR = new Color(77, 134, 156); // #4D869C (deeper blue-teal for sidebar)
+    private final Color SIDEBAR_HOVER_COLOR = new Color(122, 178, 178); // #7AB2B2 (muted teal for hover effect)
+    private final Color MAIN_BACKGROUND_COLOR = new Color(205, 232, 229); // #CDE8E5 (light mint green for main background)
+    private final Color TEXT_COLOR = Color.WHITE; // Keeping white for contrast on the sidebar
+    private final Color PRIMARY_COLOR = new Color(122, 178, 178); // #7AB2B2 (muted teal for accents)
 
     // Fonts
     private final Font SIDEBAR_FONT = new Font("Roboto", Font.PLAIN, 14);
@@ -151,7 +151,7 @@ public class Reception extends JFrame {
     }
 
     private void handleButtonAction(String buttonText) {
-        // ... (Same action handling logic as before) ...
+
         switch (buttonText) {
             case "Add Patient":
                 new NEW_PATIENT();
