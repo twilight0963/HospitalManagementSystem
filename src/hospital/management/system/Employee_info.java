@@ -14,14 +14,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Employee_info extends JFrame {
-    // Theme Colors (from the provided image)
-    private static final Color PRIMARY_COLOR = new Color(0xEE, 0xF7, 0xFF); // #EEF7FF (lightest blue for borders)
-    private static final Color BACKGROUND_COLOR = new Color(0x4D, 0x86, 0x9C); // #4D869C (darkest teal for background)
-    private static final Color TEXT_COLOR = new Color(0, 0, 0); // White for text (unchanged)
-    private static final Color ACCENT_COLOR = new Color(0x7A, 0xB2, 0xB2); // #7AB2B2 (medium teal for buttons/headers)
-    private static final Color SECONDARY_COLOR = new Color(0xCD, 0xE8, 0xE5); // #CDE8E5 (light teal for table/input background)
+    // Theme Colors
+    private static final Color PRIMARY_COLOR = new Color(0xEE, 0xF7, 0xFF);
+    private static final Color BACKGROUND_COLOR = new Color(0x4D, 0x86, 0x9C);
+    private static final Color TEXT_COLOR = new Color(0, 0, 0);
+    private static final Color ACCENT_COLOR = new Color(0x7A, 0xB2, 0xB2);
+    private static final Color SECONDARY_COLOR = new Color(0xCD, 0xE8, 0xE5);
 
-    // Fonts (retaining from NEW_PATIENT)
+    // Fonts
     private static final Font LABEL_FONT = new Font("Segoe UI", Font.BOLD, 14);
     private static final Font INPUT_FONT = new Font("Segoe UI", Font.PLAIN, 14);
 
@@ -59,7 +59,7 @@ public class Employee_info extends JFrame {
         add(buttonPanel, BorderLayout.SOUTH);
 
         // Frame Styling
-        setSize(900, 600); // Keeping the adjusted size
+        setSize(900, 600);
         setLocationRelativeTo(null);
         setVisible(true);
     }
@@ -106,7 +106,7 @@ public class Employee_info extends JFrame {
         header.setForeground(TEXT_COLOR);
         header.setFont(LABEL_FONT);
 
-        table.setBackground(SECONDARY_COLOR); // Dark gray for table background
+        table.setBackground(SECONDARY_COLOR);
         table.setForeground(TEXT_COLOR);
         table.setFont(INPUT_FONT);
         table.setRowHeight(30);

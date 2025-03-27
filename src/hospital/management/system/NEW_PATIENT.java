@@ -8,11 +8,11 @@ import java.sql.ResultSet;
 import java.util.Date;
 
 public class NEW_PATIENT extends JFrame implements ActionListener {
-    // Color palette from the provided theme
-    private static final Color PRIMARY_COLOR = new Color(77, 134, 156); // #4D869C (deeper blue-teal for accents)
-    private static final Color BACKGROUND_COLOR = new Color(205, 232, 229); // #CDE8E5 (light mint green for background)
-    private static final Color TEXT_COLOR = new Color(77, 134, 156); // #4D869C (deeper blue-teal for text)
-    private static final Color SECONDARY_COLOR = new Color(122, 178, 178); // #7AB2B2 (muted teal for secondary elements)
+    // Theme
+    private static final Color PRIMARY_COLOR = new Color(77, 134, 156);
+    private static final Color BACKGROUND_COLOR = new Color(205, 232, 229);
+    private static final Color TEXT_COLOR = new Color(77, 134, 156);
+    private static final Color SECONDARY_COLOR = new Color(122, 178, 178);
 
     // Fonts (unchanged)
     private static final Font TITLE_FONT = new Font("Segoe UI", Font.BOLD, 22);
@@ -36,7 +36,7 @@ public class NEW_PATIENT extends JFrame implements ActionListener {
 
         // Update panel with a softer, more modern look
         panel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(SECONDARY_COLOR, 2), // #7AB2B2 for border
+                BorderFactory.createLineBorder(SECONDARY_COLOR, 2),
                 BorderFactory.createEmptyBorder(20, 20, 20, 20)
         ));
 
@@ -52,7 +52,7 @@ public class NEW_PATIENT extends JFrame implements ActionListener {
         JLabel labelName = new JLabel("NEW PATIENT REGISTRATION");
         labelName.setBounds(118, 11, 400, 53);
         labelName.setFont(TITLE_FONT);
-        labelName.setForeground(PRIMARY_COLOR); // #4D869C for title
+        labelName.setForeground(PRIMARY_COLOR);
         panel.add(labelName);
 
         // Method to standardize label creation
@@ -65,7 +65,7 @@ public class NEW_PATIENT extends JFrame implements ActionListener {
         comboBox = new JComboBox<>(new String[]{"Aadhar Card", "Voter Id", "Driving License"});
         comboBox.setBounds(271, 73, 250, 30);
         comboBox.setFont(INPUT_FONT);
-        comboBox.setBackground(new Color(238, 255, 255)); // #EEFFFF for input background
+        comboBox.setBackground(new Color(238, 255, 255));
         comboBox.setForeground(TEXT_COLOR);
         panel.add(comboBox);
 
@@ -105,7 +105,7 @@ public class NEW_PATIENT extends JFrame implements ActionListener {
         }
         c1.setBounds(271, 274, 250, 30);
         c1.setFont(INPUT_FONT);
-        c1.setBackground(new Color(238, 255, 255)); // #EEFFFF for input background
+        c1.setBackground(new Color(238, 255, 255));
         panel.add(c1);
 
         // Time display
@@ -125,8 +125,8 @@ public class NEW_PATIENT extends JFrame implements ActionListener {
         createLabelAndField(panel, "Deposit :", 35, 359, textFieldDeposite = new JTextField());
 
         // Buttons
-        b1 = createStyledButton(panel, "ADD", 100, 430, SECONDARY_COLOR, Color.WHITE); // #7AB2B2 for ADD button
-        b2 = createStyledButton(panel, "Back", 260, 430, new Color(238, 255, 255), PRIMARY_COLOR); // #EEFFFF and #4D869C for Back button
+        b1 = createStyledButton(panel, "ADD", 100, 430, SECONDARY_COLOR, Color.WHITE);
+        b2 = createStyledButton(panel, "Back", 260, 430, new Color(238, 255, 255), PRIMARY_COLOR);
 
         // Frame settings
         setUndecorated(false);
@@ -155,7 +155,7 @@ public class NEW_PATIENT extends JFrame implements ActionListener {
 
         textField.setBounds(271, labelY, 250, 30);
         textField.setFont(INPUT_FONT);
-        textField.setBackground(new Color(238, 255, 255)); // #EEFFFF for input background
+        textField.setBackground(new Color(238, 255, 255));
         panel.add(textField);
     }
 

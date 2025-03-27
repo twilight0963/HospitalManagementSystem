@@ -12,8 +12,8 @@ public class Login extends JFrame implements ActionListener {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton loginButton, cancelButton;
-    private final Color PRIMARY_COLOR = new Color(77, 134, 156); // Modern blue
-    private final Color ACCENT_COLOR = new Color(231, 76, 60);  // Modern red
+    private final Color PRIMARY_COLOR = new Color(77, 134, 156);
+    private final Color ACCENT_COLOR = new Color(231, 76, 60);
     private final Color BACKGROUND_COLOR = new Color(245, 245, 245);
     private final Color TEXT_COLOR = new Color(52, 73, 94);
     private final Font HEADER_FONT = new Font("Segoe UI", Font.BOLD, 16);
@@ -34,7 +34,7 @@ public class Login extends JFrame implements ActionListener {
     }
 
     private void initializeUI() {
-        // Set the modern look and feel
+
         try {
             UIManager.setLookAndFeel(UIManager.getLookAndFeel());
         } catch (Exception e) {

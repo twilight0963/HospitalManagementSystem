@@ -11,14 +11,14 @@ import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 
 public class Room extends JFrame {
-    // Color Palette as specified
-    private static final Color PRIMARY_COLOR = new Color(0xEE, 0xF7, 0xFF); // #EEF7FF (lightest blue for borders)
-    private static final Color BACKGROUND_COLOR = new Color(0x4D, 0x86, 0x9C); // #4D869C (darkest teal for background)
-    private static final Color TEXT_COLOR = new Color(0, 0, 0); // Black for text
-    private static final Color ACCENT_COLOR = new Color(0x7A, 0xB2, 0xB2); // #7AB2B2 (medium teal for buttons/headers)
-    private static final Color SECONDARY_COLOR = new Color(0xCD, 0xE8, 0xE5); // #CDE8E5 (light teal for table/input background)
+    // Theme
+    private static final Color PRIMARY_COLOR = new Color(0xEE, 0xF7, 0xFF);
+    private static final Color BACKGROUND_COLOR = new Color(0x4D, 0x86, 0x9C);
+    private static final Color TEXT_COLOR = new Color(0, 0, 0);
+    private static final Color ACCENT_COLOR = new Color(0x7A, 0xB2, 0xB2);
+    private static final Color SECONDARY_COLOR = new Color(0xCD, 0xE8, 0xE5);
 
-    // Fonts (unchanged)
+    // Fonts
     private static final Font HEADER_FONT = new Font("Segoe UI", Font.BOLD, 16);
     private static final Font TABLE_FONT = new Font("Segoe UI", Font.PLAIN, 14);
 
@@ -46,7 +46,7 @@ public class Room extends JFrame {
 
         // Scroll Pane for Table
         JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setBorder(BorderFactory.createLineBorder(PRIMARY_COLOR, 2)); // #EEF7FF for border
+        scrollPane.setBorder(BorderFactory.createLineBorder(PRIMARY_COLOR, 2));
         scrollPane.setBackground(BACKGROUND_COLOR);
         scrollPane.getViewport().setBackground(BACKGROUND_COLOR);
         tablePanel.add(scrollPane, BorderLayout.CENTER);
@@ -77,22 +77,22 @@ public class Room extends JFrame {
     private void customizeTable() {
         table.setFont(TABLE_FONT);
         table.setRowHeight(25);
-        table.setSelectionBackground(ACCENT_COLOR); // #7AB2B2 for selection background
+        table.setSelectionBackground(ACCENT_COLOR);
         table.setShowGrid(false);
         table.setIntercellSpacing(new Dimension(0, 0));
-        table.setBackground(SECONDARY_COLOR); // #CDE8E5 for table background
-        table.setForeground(TEXT_COLOR); // Black for table text
+        table.setBackground(SECONDARY_COLOR);
+        table.setForeground(TEXT_COLOR);
 
         // Customize Table Header
         JTableHeader header = table.getTableHeader();
-        header.setBackground(ACCENT_COLOR); // #7AB2B2 for header background
-        header.setForeground(TEXT_COLOR); // Black for header text
+        header.setBackground(ACCENT_COLOR);
+        header.setForeground(TEXT_COLOR);
         header.setFont(HEADER_FONT);
 
         // Center align columns
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-        centerRenderer.setForeground(TEXT_COLOR); // Black for table text
+        centerRenderer.setForeground(TEXT_COLOR);
         for (int i = 0; i < table.getColumnCount(); i++) {
             table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
@@ -106,7 +106,7 @@ public class Room extends JFrame {
         for (String header : headers) {
             JLabel label = new JLabel(header, SwingConstants.CENTER);
             label.setFont(HEADER_FONT);
-            label.setForeground(TEXT_COLOR); // Black for header text
+            label.setForeground(TEXT_COLOR);
             headerPanel.add(label);
         }
 
@@ -132,8 +132,8 @@ public class Room extends JFrame {
 
         JButton backButton = new JButton("Back");
         backButton.setFont(HEADER_FONT);
-        backButton.setBackground(ACCENT_COLOR); // #7AB2B2 for button background
-        backButton.setForeground(TEXT_COLOR); // Black for button text
+        backButton.setBackground(ACCENT_COLOR);
+        backButton.setForeground(TEXT_COLOR);
         backButton.setFocusPainted(false);
         backButton.addActionListener(e -> dispose());
 

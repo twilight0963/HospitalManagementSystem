@@ -8,15 +8,15 @@ import java.sql.ResultSet;
 import java.util.Date;
 
 public class patient_discharge extends JFrame {
-    // Color palette as specified in Department class
-    private static final Color PRIMARY_COLOR = new Color(0xEE, 0xF7, 0xFF); // #EEF7FF (lightest blue for borders)
-    private static final Color BACKGROUND_COLOR = new Color(0x4D, 0x86, 0x9C); // #4D869C (darkest teal for background)
-    private static final Color TEXT_COLOR = new Color(0, 0, 0); // Black for text
-    private static final Color ACCENT_COLOR = new Color(0x7A, 0xB2, 0xB2); // #7AB2B2 (medium teal for buttons/headers)
-    private static final Color SECONDARY_COLOR = new Color(0xCD, 0xE8, 0xE5); // #CDE8E5 (light teal for input backgrounds)
+
+    private static final Color PRIMARY_COLOR = new Color(0xEE, 0xF7, 0xFF);
+    private static final Color BACKGROUND_COLOR = new Color(0x4D, 0x86, 0x9C);
+    private static final Color TEXT_COLOR = new Color(0, 0, 0);
+    private static final Color ACCENT_COLOR = new Color(0x7A, 0xB2, 0xB2);
+    private static final Color SECONDARY_COLOR = new Color(0xCD, 0xE8, 0xE5);
 
     patient_discharge() {
-        // Set modern look and feel
+
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
@@ -25,15 +25,13 @@ public class patient_discharge extends JFrame {
 
         // Set frame properties
         setTitle("Patient Discharge");
-        setSize(800, 400); // Matches Department class size
-        setLocationRelativeTo(null); // Center the window, replacing setLocation(400, 250)
+        setSize(800, 400);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
-
-        // Explicitly set the content pane background to avoid white screen
         getContentPane().setBackground(BACKGROUND_COLOR);
 
-        // Main Panel with modern styling
+        // Main Panel
         JPanel panel = new JPanel();
         panel.setBackground(BACKGROUND_COLOR);
         panel.setLayout(new BorderLayout(10, 10));
@@ -46,7 +44,7 @@ public class patient_discharge extends JFrame {
         titlePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         JLabel label = new JLabel("PATIENT CHECK-OUT");
         label.setFont(new Font("Segoe UI", Font.BOLD, 24));
-        label.setForeground(TEXT_COLOR); // Black for title text
+        label.setForeground(TEXT_COLOR);
         titlePanel.add(label);
         panel.add(titlePanel, BorderLayout.NORTH);
 
@@ -61,7 +59,7 @@ public class patient_discharge extends JFrame {
         // Customer ID Label
         JLabel label2 = new JLabel("Customer ID");
         label2.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        label2.setForeground(TEXT_COLOR); // Black for label text
+        label2.setForeground(TEXT_COLOR);
         gbc.gridx = 0;
         gbc.gridy = 0;
         formPanel.add(label2, gbc);
@@ -69,7 +67,7 @@ public class patient_discharge extends JFrame {
         // Patient ID Choice
         Choice choice = new Choice();
         choice.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        choice.setBackground(SECONDARY_COLOR); // #CDE8E5 for input background
+        choice.setBackground(SECONDARY_COLOR);
         choice.setPreferredSize(new Dimension(150, 30));
         gbc.gridx = 1;
         gbc.gridy = 0;
@@ -91,7 +89,7 @@ public class patient_discharge extends JFrame {
         // Room Number Label
         JLabel label3 = new JLabel("Room Number");
         label3.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        label3.setForeground(TEXT_COLOR); // Black for label text
+        label3.setForeground(TEXT_COLOR);
         gbc.gridx = 0;
         gbc.gridy = 1;
         formPanel.add(label3, gbc);
@@ -99,7 +97,7 @@ public class patient_discharge extends JFrame {
         // Room Number Display
         JLabel RNo = new JLabel();
         RNo.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        RNo.setForeground(TEXT_COLOR); // Black for display text
+        RNo.setForeground(TEXT_COLOR);
         gbc.gridx = 1;
         gbc.gridy = 1;
         formPanel.add(RNo, gbc);
@@ -107,7 +105,7 @@ public class patient_discharge extends JFrame {
         // In Time Label
         JLabel label4 = new JLabel("Admission Time");
         label4.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        label4.setForeground(TEXT_COLOR); // Black for label text
+        label4.setForeground(TEXT_COLOR);
         gbc.gridx = 0;
         gbc.gridy = 2;
         formPanel.add(label4, gbc);
@@ -115,7 +113,7 @@ public class patient_discharge extends JFrame {
         // In Time Display
         JLabel INTime = new JLabel();
         INTime.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        INTime.setForeground(TEXT_COLOR); // Black for display text
+        INTime.setForeground(TEXT_COLOR);
         gbc.gridx = 1;
         gbc.gridy = 2;
         formPanel.add(INTime, gbc);
@@ -123,7 +121,7 @@ public class patient_discharge extends JFrame {
         // Out Time Label
         JLabel label5 = new JLabel("Discharge Time");
         label5.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        label5.setForeground(TEXT_COLOR); // Black for label text
+        label5.setForeground(TEXT_COLOR);
         gbc.gridx = 0;
         gbc.gridy = 3;
         formPanel.add(label5, gbc);
@@ -132,7 +130,7 @@ public class patient_discharge extends JFrame {
         Date date = new Date();
         JLabel OUTTime = new JLabel("" + date);
         OUTTime.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        OUTTime.setForeground(TEXT_COLOR); // Black for display text
+        OUTTime.setForeground(TEXT_COLOR);
         gbc.gridx = 1;
         gbc.gridy = 3;
         formPanel.add(OUTTime, gbc);
@@ -146,8 +144,8 @@ public class patient_discharge extends JFrame {
 
         // Discharge Button
         JButton discharge = new JButton("Discharge");
-        discharge.setBackground(ACCENT_COLOR); // #7AB2B2 for button background
-        discharge.setForeground(TEXT_COLOR); // Black for button text
+        discharge.setBackground(ACCENT_COLOR);
+        discharge.setForeground(TEXT_COLOR);
         discharge.setFont(new Font("Segoe UI", Font.BOLD, 12));
         discharge.setFocusPainted(false);
         discharge.setPreferredSize(new Dimension(120, 35));
@@ -177,8 +175,8 @@ public class patient_discharge extends JFrame {
 
         // Check Button
         JButton Check = new JButton("Check Details");
-        Check.setBackground(ACCENT_COLOR); // #7AB2B2 for button background
-        Check.setForeground(TEXT_COLOR); // Black for button text
+        Check.setBackground(ACCENT_COLOR);
+        Check.setForeground(TEXT_COLOR);
         Check.setFont(new Font("Segoe UI", Font.BOLD, 12));
         Check.setFocusPainted(false);
         Check.setPreferredSize(new Dimension(120, 35));
@@ -205,8 +203,8 @@ public class patient_discharge extends JFrame {
 
         // Back Button
         JButton Back = new JButton("Back");
-        Back.setBackground(ACCENT_COLOR); // #7AB2B2 for button background
-        Back.setForeground(TEXT_COLOR); // Black for button text
+        Back.setBackground(ACCENT_COLOR);
+        Back.setForeground(TEXT_COLOR);
         Back.setFont(new Font("Segoe UI", Font.BOLD, 12));
         Back.setFocusPainted(false);
         Back.setPreferredSize(new Dimension(120, 35));
@@ -220,7 +218,6 @@ public class patient_discharge extends JFrame {
 
         panel.add(buttonPanel, BorderLayout.SOUTH);
 
-        // Ensure the frame is visible
         setVisible(true);
         System.out.println("patient_discharge frame set to visible");
     }

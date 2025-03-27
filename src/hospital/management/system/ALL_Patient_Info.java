@@ -16,12 +16,12 @@ public class ALL_Patient_Info extends JFrame {
     // Logger
     private static final Logger LOGGER = Logger.getLogger(ALL_Patient_Info.class.getName());
 
-    // Color Constants as specified
-    private static final Color PRIMARY_COLOR = new Color(0xEE, 0xF7, 0xFF); // #EEF7FF (lightest blue for borders)
-    private static final Color BACKGROUND_COLOR = new Color(0x4D, 0x86, 0x9C); // #4D869C (darkest teal for background)
-    private static final Color TEXT_COLOR = new Color(0, 0, 0); // Black for text
-    private static final Color ACCENT_COLOR = new Color(0x7A, 0xB2, 0xB2); // #7AB2B2 (medium teal for buttons/headers)
-    private static final Color SECONDARY_COLOR = new Color(0xCD, 0xE8, 0xE5); // #CDE8E5 (light teal for table/input background)
+    // Theme
+    private static final Color PRIMARY_COLOR = new Color(0xEE, 0xF7, 0xFF);
+    private static final Color BACKGROUND_COLOR = new Color(0x4D, 0x86, 0x9C);
+    private static final Color TEXT_COLOR = new Color(0, 0, 0);
+    private static final Color ACCENT_COLOR = new Color(0x7A, 0xB2, 0xB2);
+    private static final Color SECONDARY_COLOR = new Color(0xCD, 0xE8, 0xE5);
 
     // UI Components
     private JTable table;
@@ -48,7 +48,7 @@ public class ALL_Patient_Info extends JFrame {
         add(mainPanel, BorderLayout.CENTER);
 
         // Frame Styling
-        setSize(1000, 650); // Updated to match Room class size
+        setSize(1000, 650);
         setLocationRelativeTo(null);
         setVisible(true);
     }
@@ -68,7 +68,7 @@ public class ALL_Patient_Info extends JFrame {
         // Scrollpane for Table
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.getViewport().setBackground(BACKGROUND_COLOR);
-        scrollPane.setBorder(BorderFactory.createLineBorder(PRIMARY_COLOR)); // #EEF7FF for border
+        scrollPane.setBorder(BorderFactory.createLineBorder(PRIMARY_COLOR));
         panel.add(scrollPane, BorderLayout.CENTER);
 
         return panel;
@@ -77,20 +77,20 @@ public class ALL_Patient_Info extends JFrame {
     private void customizeTable(JTable table) {
         // Table Header Styling
         JTableHeader header = table.getTableHeader();
-        header.setBackground(ACCENT_COLOR); // #7AB2B2 for header background
-        header.setForeground(TEXT_COLOR); // Black for header text
+        header.setBackground(ACCENT_COLOR);
+        header.setForeground(TEXT_COLOR);
         header.setFont(new Font("Segoe UI", Font.BOLD, 14));
 
         // Table Body Styling
-        table.setBackground(SECONDARY_COLOR); // #CDE8E5 for table background
-        table.setForeground(TEXT_COLOR); // Black for table text
+        table.setBackground(SECONDARY_COLOR);
+        table.setForeground(TEXT_COLOR);
         table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         table.setRowHeight(30);
 
         // Center Align Cell Contents
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-        centerRenderer.setForeground(TEXT_COLOR); // Black for table text
+        centerRenderer.setForeground(TEXT_COLOR);
         table.setDefaultRenderer(Object.class, centerRenderer);
     }
 
@@ -108,7 +108,6 @@ public class ALL_Patient_Info extends JFrame {
                     "Database Error",
                     JOptionPane.ERROR_MESSAGE);
         } finally {
-            // Close the statement and connection directly since conn class doesn't have closeConnection()
             if (connection != null) {
                 try {
                     if (connection.statement != null && !connection.statement.isClosed()) {
@@ -146,8 +145,8 @@ public class ALL_Patient_Info extends JFrame {
     }
 
     private void styleButton(JButton button) {
-        button.setBackground(ACCENT_COLOR); // #7AB2B2 for button background
-        button.setForeground(TEXT_COLOR); // Black for button text
+        button.setBackground(ACCENT_COLOR);
+        button.setForeground(TEXT_COLOR);
         button.setFont(new Font("Segoe UI", Font.BOLD, 14));
         button.setFocusPainted(false);
         button.setBorderPainted(false);
@@ -155,7 +154,6 @@ public class ALL_Patient_Info extends JFrame {
     }
 
     public static void main(String[] args) {
-        // Use SwingUtilities to ensure thread safety
         SwingUtilities.invokeLater(() -> new ALL_Patient_Info());
     }
 }

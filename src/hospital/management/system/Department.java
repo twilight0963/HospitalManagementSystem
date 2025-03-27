@@ -11,14 +11,14 @@ import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 
 public class Department extends JFrame {
-    // Theme Colors as specified
-    private static final Color PRIMARY_COLOR = new Color(0xEE, 0xF7, 0xFF); // #EEF7FF (lightest blue for borders)
-    private static final Color BACKGROUND_COLOR = new Color(0x4D, 0x86, 0x9C); // #4D869C (darkest teal for background)
-    private static final Color TEXT_COLOR = new Color(0, 0, 0); // Black for text
-    private static final Color ACCENT_COLOR = new Color(0x7A, 0xB2, 0xB2); // #7AB2B2 (medium teal for buttons/headers)
-    private static final Color SECONDARY_COLOR = new Color(0xCD, 0xE8, 0xE5); // #CDE8E5 (light teal for table/input background)
+    // Theme Colors
+    private static final Color PRIMARY_COLOR = new Color(0xEE, 0xF7, 0xFF);
+    private static final Color BACKGROUND_COLOR = new Color(0x4D, 0x86, 0x9C);
+    private static final Color TEXT_COLOR = new Color(0, 0, 0);
+    private static final Color ACCENT_COLOR = new Color(0x7A, 0xB2, 0xB2);
+    private static final Color SECONDARY_COLOR = new Color(0xCD, 0xE8, 0xE5);
 
-    // Fonts (unchanged)
+    // Fonts
     private final Font HEADER_FONT = new Font("Roboto", Font.BOLD, 16);
     private final Font TABLE_FONT = new Font("Roboto", Font.PLAIN, 14);
     private final Font BUTTON_FONT = new Font("Roboto", Font.BOLD, 12);
@@ -43,7 +43,7 @@ public class Department extends JFrame {
         setSize(800, 600);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setVisible(true);  // Ensure visibility here too
+        setVisible(true);
     }
 
     private void setupUI() {
@@ -67,7 +67,7 @@ public class Department extends JFrame {
         table = createDepartmentTable();
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.getViewport().setBackground(BACKGROUND_COLOR);
-        scrollPane.setBorder(BorderFactory.createLineBorder(PRIMARY_COLOR)); // #EEF7FF for border
+        scrollPane.setBorder(BorderFactory.createLineBorder(PRIMARY_COLOR));
 
         JLabel titleLabel = new JLabel("Hospital Departments", SwingConstants.CENTER);
         titleLabel.setFont(HEADER_FONT);
@@ -84,19 +84,19 @@ public class Department extends JFrame {
         table = new JTable();
         table.setFont(TABLE_FONT);
         table.setRowHeight(30);
-        table.setBackground(SECONDARY_COLOR); // #CDE8E5 for table background
-        table.setForeground(TEXT_COLOR); // Black for table text
-        table.setSelectionBackground(ACCENT_COLOR); // #7AB2B2 for selection background
-        table.setSelectionForeground(TEXT_COLOR); // Black for selection text
+        table.setBackground(SECONDARY_COLOR);
+        table.setForeground(TEXT_COLOR);
+        table.setSelectionBackground(ACCENT_COLOR);
+        table.setSelectionForeground(TEXT_COLOR);
 
         JTableHeader header = table.getTableHeader();
-        header.setBackground(ACCENT_COLOR); // #7AB2B2 for header background
-        header.setForeground(TEXT_COLOR); // Black for header text
+        header.setBackground(ACCENT_COLOR);
+        header.setForeground(TEXT_COLOR);
         header.setFont(HEADER_FONT);
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-        centerRenderer.setForeground(TEXT_COLOR); // Black for table text
+        centerRenderer.setForeground(TEXT_COLOR);
         table.setDefaultRenderer(Object.class, centerRenderer);
 
         refreshTableData();
@@ -127,8 +127,8 @@ public class Department extends JFrame {
 
         JButton addButton = new JButton("Add Department");
         addButton.setFont(BUTTON_FONT);
-        addButton.setBackground(ACCENT_COLOR); // #7AB2B2 for button background
-        addButton.setForeground(TEXT_COLOR); // Black for button text
+        addButton.setBackground(ACCENT_COLOR);
+        addButton.setForeground(TEXT_COLOR);
         addButton.setFocusPainted(false);
         addButton.addActionListener(new ActionListener() {
             @Override
@@ -139,8 +139,8 @@ public class Department extends JFrame {
 
         JButton removeButton = new JButton("Remove Department");
         removeButton.setFont(BUTTON_FONT);
-        removeButton.setBackground(ACCENT_COLOR); // #7AB2B2 for button background
-        removeButton.setForeground(TEXT_COLOR); // Black for button text
+        removeButton.setBackground(ACCENT_COLOR);
+        removeButton.setForeground(TEXT_COLOR);
         removeButton.setFocusPainted(false);
         removeButton.addActionListener(new ActionListener() {
             @Override
@@ -151,8 +151,8 @@ public class Department extends JFrame {
 
         JButton backButton = new JButton("Back to Dashboard");
         backButton.setFont(BUTTON_FONT);
-        backButton.setBackground(ACCENT_COLOR); // #7AB2B2 for button background
-        backButton.setForeground(TEXT_COLOR); // Black for button text
+        backButton.setBackground(ACCENT_COLOR);
+        backButton.setForeground(TEXT_COLOR);
         backButton.setFocusPainted(false);
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -170,27 +170,10 @@ public class Department extends JFrame {
 
     private void addDepartment() {
         JPanel inputPanel = new JPanel(new GridLayout(2, 2, 5, 5));
-        // Remove theme: Use default panel background (typically a light gray)
-        // inputPanel.setBackground(BACKGROUND_COLOR); // Removed #4D869C background
-
         JTextField deptField = new JTextField(20);
-        // Remove theme: Use default text field background (typically white) and foreground (typically black)
-        // deptField.setBackground(SECONDARY_COLOR); // Removed #CDE8E5 background
-        // deptField.setForeground(TEXT_COLOR); // Removed black foreground (already default)
-
         JTextField phoneField = new JTextField(20);
-        // Remove theme: Use default text field background and foreground
-        // phoneField.setBackground(SECONDARY_COLOR); // Removed #CDE8E5 background
-        // phoneField.setForeground(TEXT_COLOR); // Removed black foreground (already default)
-
         JLabel deptLabel = new JLabel("Department Name:");
-        // Remove theme: Use default label foreground (typically black)
-        // deptLabel.setForeground(TEXT_COLOR); // Removed black foreground (already default)
-
         JLabel phoneLabel = new JLabel("Phone Number:");
-        // Remove theme: Use default label foreground
-        // phoneLabel.setForeground(TEXT_COLOR); // Removed black foreground (already default)
-
         inputPanel.add(deptLabel);
         inputPanel.add(deptField);
         inputPanel.add(phoneLabel);

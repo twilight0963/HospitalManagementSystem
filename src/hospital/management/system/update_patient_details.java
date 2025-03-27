@@ -7,12 +7,12 @@ import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 
 public class update_patient_details extends JFrame {
-    // Theme Colors (same as Employee_info)
-    private static final Color PRIMARY_COLOR = new Color(0xEE, 0xF7, 0xFF); // #EEF7FF (lightest blue for borders)
-    private static final Color BACKGROUND_COLOR = new Color(0x4D, 0x86, 0x9C); // #4D869C (darkest teal for background)
-    private static final Color TEXT_COLOR = new Color(0, 0, 0); // Black for text (as in Employee_info)
-    private static final Color ACCENT_COLOR = new Color(0x7A, 0xB2, 0xB2); // #7AB2B2 (medium teal for buttons/headers)
-    private static final Color SECONDARY_COLOR = new Color(0xCD, 0xE8, 0xE5); // #CDE8E5 (light teal for input background)
+    // Theme Colors
+    private static final Color PRIMARY_COLOR = new Color(0xEE, 0xF7, 0xFF);
+    private static final Color BACKGROUND_COLOR = new Color(0x4D, 0x86, 0x9C);
+    private static final Color TEXT_COLOR = new Color(0, 0, 0);
+    private static final Color ACCENT_COLOR = new Color(0x7A, 0xB2, 0xB2);
+    private static final Color SECONDARY_COLOR = new Color(0xCD, 0xE8, 0xE5);
 
     // Fonts (same as Employee_info)
     private static final Font LABEL_FONT = new Font("Segoe UI", Font.BOLD, 14);
@@ -59,7 +59,7 @@ public class update_patient_details extends JFrame {
         add(buttonPanel, BorderLayout.SOUTH);
 
         // Frame Styling
-        setSize(950, 500); // Match the size of the original
+        setSize(950, 500);
         setLocationRelativeTo(null); // Center the window
         setVisible(true);
     }
