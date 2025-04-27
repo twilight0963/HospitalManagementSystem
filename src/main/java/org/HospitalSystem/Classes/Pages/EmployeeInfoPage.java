@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.HospitalSystem.Classes.Components.DashboardDrawer;
-import org.HospitalSystem.Classes.Components.ImagePanel;
+import org.HospitalSystem.Classes.Components.SpecialisationPanel;
 import org.HospitalSystem.Classes.Components.StatusPanel;
 import org.HospitalSystem.Classes.DatabaseManager;
 import org.HospitalSystem.Classes.Doctor;
@@ -89,12 +89,12 @@ public final class EmployeeInfoPage extends JPanel {
                     }
                 }
             }
-            ImagePanel imagePanel = new ImagePanel(
-                "dr.png",
-                (int)(remainingWidth/3.2),
-                (int)(remainingWidth/3.2)
+            SpecialisationPanel specialisationPanel = new SpecialisationPanel(
+                (int)(remainingWidth/1.6),  // Make it span two columns
+                db,
+                currentDoctor
             );
-            infoContent.add(imagePanel, gbc);
+            infoContent.add(specialisationPanel, gbc);
         }
 
         mainContent.add(infoContent, BorderLayout.CENTER);

@@ -13,14 +13,17 @@ public final class Specialisations {
             default -> "-";
         };
     }
-    public static int toID(String name){
-        return switch (name.toLowerCase()) {
-            case "gp" -> 0;
-            case "cardio" -> 1;
-            case "neuro" -> 2;
-            case "ortho" -> 3;
-            case "derma" -> 4;
-            case "pedia" -> 5;
+
+
+
+    public static int toID(String name) {
+        return switch (name) {
+            case "General Practitioner" -> 0;
+            case "Cardiologist" -> 1;
+            case "Neurologist" -> 2;
+            case "Orthopedic Surgeon" -> 3;
+            case "Dermatologist" -> 4;
+            case "Pediatrician" -> 5;
             default -> -1;
         };
     }

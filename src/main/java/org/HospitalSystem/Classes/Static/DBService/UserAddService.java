@@ -32,4 +32,18 @@ public class UserAddService {
             return -1;
         }
     }
+
+    //User Counting Service
+    public static int getUserCount(DatabaseManager dbManager) {
+        String query = "SELECT COUNT(*) AS user_count FROM Doctors";
+        try (PreparedStatement stmt = dbManager.getConnection().prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("user_count");
+            }
+        } catch (SQLException e) {
+            System.err.println("Failed to count users: " + e.getMessage());
+        }
+        return 0;
+    }
 }

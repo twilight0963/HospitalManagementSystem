@@ -9,10 +9,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import org.HospitalSystem.Classes.Pages.ReceptionPage;
+import org.HospitalSystem.Classes.Static.DBService.CurrentUserService;
 import org.HospitalSystem.HMS;
 
 public class DashboardDrawer extends JPanel {
     private static void switchPage(String page_name, JPanel navigatorPanel, CardLayout navigator, JFrame root) {
+        if (page_name.equals("dashboard")){
+            ReceptionPage.cleanupAll();
+        }
         navigator.show(navigatorPanel, page_name);
         root.pack();
     }
@@ -76,6 +81,8 @@ public class DashboardDrawer extends JPanel {
                     case "Pharmacy" -> switchPage("pharmacy", navigatorPanel, navigator, root);
                     case "Prescriptions" -> switchPage("prescriptions", navigatorPanel, navigator, root);
                     case "Log out" -> {
+                        CurrentUserService.logout();
+                        ReceptionPage.cleanupAll();
                         root.dispose();
                         HMS.showLoginFrame();
                     }

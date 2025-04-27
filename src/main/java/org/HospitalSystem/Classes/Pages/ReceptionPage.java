@@ -5,23 +5,88 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 import org.HospitalSystem.Classes.Components.DashboardDrawer;
 import org.HospitalSystem.Classes.Components.StatusPanel;
 import org.HospitalSystem.Classes.DatabaseManager;
+import org.HospitalSystem.Classes.Static.DBService.AmbulanceService;
 import org.HospitalSystem.Classes.Static.DBService.PatientService;
+import org.HospitalSystem.Classes.Static.DBService.RoomService;
+import org.HospitalSystem.Classes.Static.DBService.UserAddService;
 
-public final class ReceptionPage extends JPanel { 
+public final class ReceptionPage extends JPanel {
+    private static final List<Timer> activeTimers = new ArrayList<>();
     private final JPanel statusContent;
     private final int remainingWidth;
     private final JLabel titleLabel;
+    private final DatabaseManager db;
+    private Timer refreshTimer;
 
-    // Modify constructor to store necessary fields
+    public void refreshStatistics() {
+        statusContent.removeAll();
+        
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 1.0;
+        gbc.weighty = 0.1;
+
+        // Re-add title
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 3;
+        gbc.insets = new java.awt.Insets(10, 10, 20, 10);
+        statusContent.add(titleLabel, gbc);
+
+        // Re-add status panels
+        gbc.gridwidth = 1;
+        gbc.insets = new java.awt.Insets(10, 10, 10, 10);
+        gbc.weighty = 1;
+        for (int row = 1; row < 3; row++) {
+            for (int col = 0; col < 3; col++) {
+                gbc.gridx = col;
+                gbc.gridy = row;
+                
+                String title = "";
+                switch ((row-1) * 3 + col) {
+                    case 0 -> title = "Patient Count";
+                    case 1 -> title = "Occupied Rooms";
+                    case 2 -> title = "Available Rooms";
+                    case 3 -> title = "Employees";
+                    case 4 -> title = "Ambulances";
+                    case 5 -> title = "Critical Patients";
+                }
+                
+                int status = 0;
+                switch ((row-1) * 3 + col) {
+                    case 0 -> status = PatientService.patientCount(db);
+                    case 1 -> status = RoomService.getOccupiedRoomCount(db);
+                    case 2 -> status = RoomService.getFreeRoomCount(db);
+                    case 3 -> status = UserAddService.getUserCount(db);
+                    case 4 -> status = AmbulanceService.getAllAmbulances(db).length;
+                    case 5 -> status = PatientService.criticalCount(db);
+                }
+
+                statusContent.add(new StatusPanel(
+                    (int)(remainingWidth/3.2), 
+                    title, 
+                    String.valueOf(status)
+                ), gbc);
+            }
+        }
+        
+        statusContent.revalidate();
+        statusContent.repaint();
+    }
+
     public ReceptionPage(JFrame root, JPanel navigatorPanel, DatabaseManager db, int width, int height) {
+        this.db = db;
         this.remainingWidth = width - width/5;
         
         setLayout(new java.awt.BorderLayout());
@@ -66,20 +131,20 @@ public final class ReceptionPage extends JPanel {
                 switch ((row-1) * 3 + col) {
                     case 0 -> title = "Patient Count";
                     case 1 -> title = "Occupied Rooms";
-                    case 2 -> title = "Departments";
+                    case 2 -> title = "Avalaible Rooms";
                     case 3 -> title = "Employees";
                     case 4 -> title = "Ambulances";
-                    case 5 -> title = "Patients Discharged today";
+                    case 5 -> title = "Critical Patients";
                 }
                 
                 int status = 0;
                 switch ((row-1) * 3 + col) {
                     case 0 -> status = PatientService.patientCount(db);
-                    case 1 -> status = 0;
-                    case 2 -> status = 0;
-                    case 3 -> status = 0;
-                    case 4 -> status = 0;
-                    case 5 -> status = 0;
+                    case 1 -> status = RoomService.getOccupiedRoomCount(db);
+                    case 2 -> status = RoomService.getFreeRoomCount(db);
+                    case 3 -> status = UserAddService.getUserCount(db);
+                    case 4 -> status = AmbulanceService.getAllAmbulances(db).length;
+                    case 5 -> status = PatientService.criticalCount(db);
                 }
 
                 statusContent.add(new StatusPanel(
@@ -95,9 +160,30 @@ public final class ReceptionPage extends JPanel {
         statusContent.setBackground(java.awt.Color.decode("#8abcd1"));
         mainContent.setOpaque(true);
         add(mainContent, java.awt.BorderLayout.CENTER);
+
+        // Start refresh timer (updates every 5 seconds)
+        refreshTimer = new Timer(5000, _ -> refreshStatistics());
+        activeTimers.add(refreshTimer);  // Add to registry
+        refreshTimer.start();
     }
     
     public ReceptionPage(JFrame dashboard, JPanel navigatorPanel, DatabaseManager db) {
         this(dashboard, navigatorPanel, db, 1280, 720);
+    }
+
+    // Add cleanup method
+    public void cleanup() {
+        if (refreshTimer != null) {
+            refreshTimer.stop();
+            activeTimers.remove(refreshTimer);  // Remove from registry
+        }
+    }
+
+    // Static cleanup for all instances
+    public static void cleanupAll() {
+        for (Timer timer : activeTimers) {
+            timer.stop();
+        }
+        activeTimers.clear();
     }
 }

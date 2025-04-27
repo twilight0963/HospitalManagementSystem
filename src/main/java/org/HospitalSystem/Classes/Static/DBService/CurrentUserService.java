@@ -23,11 +23,30 @@ public class CurrentUserService {
                                     rs.getString("Password"), 
                                     rs.getString("FirstName"), 
                                     rs.getString("LastName"));
+            doctor.specialise(rs.getInt("Specialisation_ID"));
             return doctor;
 
         } catch (SQLException e) {
             System.err.println("Not authenticated. " + e.getMessage());
             return null;
         }
+    }
+
+    public static boolean updateSpecialisation(int specialisation, DatabaseManager dbManager) {
+        String query = "UPDATE Doctors SET Specialisation_ID = ? WHERE Doctor_ID = ?";
+        try (PreparedStatement stmt = dbManager.getConnection().prepareStatement(query)) {
+            stmt.setInt(1, specialisation);
+            stmt.setInt(2, DatabaseManager.user_id);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Failed to update specialisation: " + e.getMessage());
+            return false;
+        }
+    }
+    // Logout function
+    public static void logout() {
+        doctor = null;
+        cur_id = 0;
+        DatabaseManager.user_id = 0;
     }
 }

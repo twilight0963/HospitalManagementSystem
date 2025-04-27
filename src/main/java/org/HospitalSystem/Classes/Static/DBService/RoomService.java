@@ -125,4 +125,30 @@ public class RoomService {
             return new Room[0];
         }
     }
+    //Get Occupied Room Count
+    public static int getOccupiedRoomCount(DatabaseManager dbManager) {
+        String query = "SELECT COUNT(*) AS occupied_count FROM Rooms WHERE Occupant IS NOT NULL";
+        try (PreparedStatement stmt = dbManager.getConnection().prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("occupied_count");
+            }
+        } catch (SQLException e) {
+            System.err.println("Failed to count occupied rooms: " + e.getMessage());
+        }
+        return 0;
+    }
+    //Get Free Room Count
+    public static int getFreeRoomCount(DatabaseManager dbManager) {
+        String query = "SELECT COUNT(*) AS free_count FROM Rooms WHERE Occupant IS NULL";
+        try (PreparedStatement stmt = dbManager.getConnection().prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("free_count");
+            }
+        } catch (SQLException e) {
+            System.err.println("Failed to count free rooms: " + e.getMessage());
+        }
+        return 0;
+    }
 }

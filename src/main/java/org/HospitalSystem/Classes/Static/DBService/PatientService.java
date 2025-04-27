@@ -150,5 +150,19 @@ public class PatientService {
             return new Patient[0];
         }
     }
+
+    //Get count of critical patients
+    public static int criticalCount(DatabaseManager dbManager) {
+        String query = "SELECT COUNT(*) AS count FROM Patients WHERE Status = 'Critical'";
+        try (PreparedStatement stmt = dbManager.getConnection().prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("count");
+            }
+        } catch (SQLException e) {
+            System.err.println("Failed to count critical patients: " + e.getMessage());
+        }
+        return 0;
+    }
     
 }

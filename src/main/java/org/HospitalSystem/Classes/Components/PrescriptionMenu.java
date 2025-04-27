@@ -100,7 +100,7 @@ public class PrescriptionMenu extends JDialog {
 
         // Delete button
         if (prescription.doctor_id == DatabaseManager.user_id) {
-            HoverButton deleteButton = new HoverButton("Stop", 60, 25, "#ff4444", "#cc0000");
+            HoverButton deleteButton = new HoverButton("Stop", 120, 25, "#ff4444", "#cc0000");
             deleteButton.addActionListener(_ -> {
                 if (PrescriptionService.deletePrescription(prescription.id, dbManager)) {
                     refreshPrescriptions();
