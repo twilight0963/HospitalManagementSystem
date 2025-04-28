@@ -4,10 +4,12 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Font;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 import org.HospitalSystem.Classes.Static.DBService.CurrentUserService;
 import org.HospitalSystem.HMS;
@@ -40,6 +42,8 @@ public class DashboardDrawer extends JPanel {
         add(titleLabel, gbc);
         gbc.gridy++;
         HoverButton dashboardButton = new HoverButton("Dashboard", "dashboard.png", width-10, 50);
+        dashboardButton.setHorizontalAlignment(SwingConstants.LEFT);
+        dashboardButton.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
         dashboardButton.addActionListener(_ -> {
             // Handle button click
             System.out.println("Dashboard clicked");
@@ -69,6 +73,8 @@ public class DashboardDrawer extends JPanel {
                                     "amb.png", "appointment.png", "Pharmacy.png", "prescriptions.png", "logout.png"};
             scrollGbc.gridy++;
             HoverButton drawerButton = new HoverButton(buttonLabels[i], buttonIcons[i], width-10, 50);
+            drawerButton.setHorizontalAlignment(SwingConstants.LEFT);
+            drawerButton.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
             drawerButton.addActionListener(_ -> {
                 // Handle button click
                 System.out.println(buttonLabels[index] + " clicked");
