@@ -9,6 +9,7 @@ import java.awt.GridBagLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 import org.HospitalSystem.Classes.Components.DashboardDrawer;
 import org.HospitalSystem.Classes.Components.SpecialisationPanel;
@@ -22,8 +23,75 @@ public final class EmployeeInfoPage extends JPanel {
     private final JPanel infoContent;
     private final int remainingWidth;
     private final JLabel titleLabel;
+    private final DatabaseManager db;
+    private Timer refreshTimer;
+    private Doctor currentDoctor;
+
+    public void refreshInfo() {
+        currentDoctor = CurrentUserService.getInfo(db);
+        if (currentDoctor != null) {
+            infoContent.removeAll();
+            
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.fill = GridBagConstraints.BOTH;
+            gbc.weightx = 1.0;
+            gbc.weighty = 0.1;
+
+            // Re-add title
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.gridwidth = 3;
+            gbc.insets = new java.awt.Insets(10, 10, 20, 10);
+            infoContent.add(titleLabel, gbc);
+
+            // Reset constraints for info panels
+            gbc.gridwidth = 1;
+            gbc.insets = new java.awt.Insets(10, 10, 10, 10);
+            gbc.weighty = 1;
+
+            // Update info panels
+            String[][] infoPanels = {
+                {"Employee ID", String.valueOf(currentDoctor.id)},
+                {"Name", currentDoctor.full_name},
+                {"Specialisation", currentDoctor.getSpecialisation()},
+                {"Active Patients", String.valueOf(PatientService.myPatients(db).length)},
+            };
+
+            for (int row = 1; row < 3; row++) {
+                for (int col = 0; col < 2; col++) {
+                    gbc.gridx = col;
+                    gbc.gridy = row;
+                    
+                    int index = (row-1) * 3 + col;
+                    if (index < infoPanels.length) {
+                        StatusPanel panel = new StatusPanel(
+                            (int)(remainingWidth/3.2),
+                            infoPanels[index][0],
+                            infoPanels[index][1]
+                        );
+                        infoContent.add(panel, gbc);
+                    }
+                }
+            }
+            
+            // Re-add specialisation panel
+            gbc.gridx = 1;
+            gbc.gridy = 2;
+            gbc.gridwidth = 2;
+            SpecialisationPanel specialisationPanel = new SpecialisationPanel(
+                (int)(remainingWidth/1.6),
+                db,
+                currentDoctor
+            );
+            infoContent.add(specialisationPanel, gbc);
+
+            infoContent.revalidate();
+            infoContent.repaint();
+        }
+    }
 
     public EmployeeInfoPage(JFrame root, JPanel navigatorPanel, DatabaseManager db, int width, int height) {
+        this.db = db;
         this.remainingWidth = width - width/5;
         
         setLayout(new BorderLayout());
@@ -56,7 +124,7 @@ public final class EmployeeInfoPage extends JPanel {
         infoContent.add(titleLabel, gbc);
 
         // Get doctor info
-        Doctor currentDoctor = CurrentUserService.getInfo(db);
+        currentDoctor = CurrentUserService.getInfo(db);
         if (currentDoctor != null) {
             titleLabel.setText("Employee Information");
 
@@ -89,8 +157,10 @@ public final class EmployeeInfoPage extends JPanel {
                     }
                 }
             }
+            gbc.gridx = 1;
+            gbc.gridy = 2;
             SpecialisationPanel specialisationPanel = new SpecialisationPanel(
-                (int)(remainingWidth/1.6),  // Make it span two columns
+                (int)(remainingWidth/1.7), 
                 db,
                 currentDoctor
             );
@@ -101,6 +171,10 @@ public final class EmployeeInfoPage extends JPanel {
         infoContent.setBackground(Color.decode("#8abcd1"));
         mainContent.setOpaque(true);
         add(mainContent, BorderLayout.CENTER);
+
+        // Start refresh timer (updates every 5 seconds)
+        refreshTimer = new Timer(5000, _ -> refreshInfo());
+        refreshTimer.start();
     }
 
     public EmployeeInfoPage(JFrame root, JPanel navigatorPanel, DatabaseManager db) {

@@ -80,7 +80,6 @@ public class PatientService {
                 patient.status = rs.getString("Status");
                 patients[index++] = patient;
             }
-
             return patients;
         } catch (SQLException e) {
             System.err.println("Failed to retrieve patients: " + e.getMessage());

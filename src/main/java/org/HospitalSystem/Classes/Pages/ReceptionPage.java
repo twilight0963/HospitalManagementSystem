@@ -5,8 +5,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,12 +15,12 @@ import org.HospitalSystem.Classes.Components.DashboardDrawer;
 import org.HospitalSystem.Classes.Components.StatusPanel;
 import org.HospitalSystem.Classes.DatabaseManager;
 import org.HospitalSystem.Classes.Static.DBService.AmbulanceService;
+import org.HospitalSystem.Classes.Static.DBService.CurrentUserService;
 import org.HospitalSystem.Classes.Static.DBService.PatientService;
 import org.HospitalSystem.Classes.Static.DBService.RoomService;
 import org.HospitalSystem.Classes.Static.DBService.UserAddService;
 
 public final class ReceptionPage extends JPanel {
-    private static final List<Timer> activeTimers = new ArrayList<>();
     private final JPanel statusContent;
     private final int remainingWidth;
     private final JLabel titleLabel;
@@ -101,7 +99,7 @@ public final class ReceptionPage extends JPanel {
         // Create and add the main content area
         JPanel mainContent = new JPanel(new BorderLayout(10,10));
         this.statusContent = new JPanel(new GridBagLayout());
-        this.titleLabel = new JLabel();
+        this.titleLabel = new JLabel("Welcome to Health Safari, Dr. " + CurrentUserService.getInfo(db).full_name + "!");
         
         // Configure GridBagConstraints properly
         GridBagConstraints gbc = new GridBagConstraints();
@@ -163,27 +161,10 @@ public final class ReceptionPage extends JPanel {
 
         // Start refresh timer (updates every 5 seconds)
         refreshTimer = new Timer(5000, _ -> refreshStatistics());
-        activeTimers.add(refreshTimer);  // Add to registry
         refreshTimer.start();
     }
     
     public ReceptionPage(JFrame dashboard, JPanel navigatorPanel, DatabaseManager db) {
         this(dashboard, navigatorPanel, db, 1280, 720);
-    }
-
-    // Add cleanup method
-    public void cleanup() {
-        if (refreshTimer != null) {
-            refreshTimer.stop();
-            activeTimers.remove(refreshTimer);  // Remove from registry
-        }
-    }
-
-    // Static cleanup for all instances
-    public static void cleanupAll() {
-        for (Timer timer : activeTimers) {
-            timer.stop();
-        }
-        activeTimers.clear();
     }
 }

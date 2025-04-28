@@ -15,6 +15,7 @@ public class AuthService {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 DatabaseManager.user_id = id;
+                CurrentUserService.cur_id = id;
                 return true;
             }
             throw new AuthError();

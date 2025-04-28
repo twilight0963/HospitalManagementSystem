@@ -11,13 +11,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.Timer;
 
 import org.HospitalSystem.Classes.DatabaseManager;
 import org.HospitalSystem.Classes.Patient;
 import org.HospitalSystem.Classes.Static.DBService.PatientService;
 
-public final class PrescriptionPatients extends JPanel {
+public class PrescriptionPatients extends JPanel {
     private final JPanel patientListPanel;
+    private final Timer refreshTimer;
 
     private void refreshPatients(JFrame root, DatabaseManager dbManager) {
         patientListPanel.removeAll();
@@ -61,5 +63,9 @@ public final class PrescriptionPatients extends JPanel {
         scrollPane.setBorder(null);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         add(scrollPane, BorderLayout.CENTER);
+
+        // Add refresh timer (updates every 5 seconds)
+        refreshTimer = new Timer(5000, _ -> refreshPatients(root, dbManager));
+        refreshTimer.start();
     }
 }
