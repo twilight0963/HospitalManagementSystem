@@ -39,7 +39,7 @@ public class DashboardDrawer extends JPanel {
         titleLabel.setFont(font);
         add(titleLabel, gbc);
         gbc.gridy++;
-        HoverButton dashboardButton = new HoverButton("Dashboard", width-10, 50);
+        HoverButton dashboardButton = new HoverButton("Dashboard", "dashboard.png", width-10, 50);
         dashboardButton.addActionListener(_ -> {
             // Handle button click
             System.out.println("Dashboard clicked");
@@ -65,8 +65,10 @@ public class DashboardDrawer extends JPanel {
             final int index = i;
             String[] buttonLabels = {"Your Patients", "Rooms", "Employee info", 
                                     "Ambulance", "Appointments", "Pharmacy", "Prescriptions", "Log out"};
+            String[] buttonIcons = {"patient.png", "room.png", "doctor.png", 
+                                    "amb.png", "appointment.png", "Pharmacy.png", "prescriptions.png", "logout.png"};
             scrollGbc.gridy++;
-            HoverButton drawerButton = new HoverButton(buttonLabels[i], width-10, 50);
+            HoverButton drawerButton = new HoverButton(buttonLabels[i], buttonIcons[i], width-10, 50);
             drawerButton.addActionListener(_ -> {
                 // Handle button click
                 System.out.println(buttonLabels[index] + " clicked");

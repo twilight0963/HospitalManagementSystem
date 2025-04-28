@@ -98,7 +98,7 @@ public final class Pharmacy extends JPanel {
 
         gbc.gridx = 2;
         gbc.weightx = 0.0;
-        HoverButton addButton = new HoverButton("Add Medicine", "medicine.png", 120, 30);
+        HoverButton addButton = new HoverButton("Add Medicine", "meds.png", 120, 30);
         addButton.addActionListener(_ -> {
             MedicineMenu dialog = new MedicineMenu(root);
             dialog.setTitle("Add New Medicine");

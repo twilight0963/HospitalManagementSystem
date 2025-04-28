@@ -32,6 +32,7 @@ public class StatusPanel extends JPanel{
         statusLabel.setForeground(Color.decode("#4d869c"));
         add(statusLabel, BorderLayout.CENTER);
         
+
         setBackground(Color.WHITE);
     }
 

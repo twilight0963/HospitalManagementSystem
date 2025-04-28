@@ -52,7 +52,7 @@ public final class Appointments extends JPanel {
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weighty = 0.0;
-        HoverButton addButton = new HoverButton("New Appointment", "calendar.png", 150, 30);
+        HoverButton addButton = new HoverButton("New Appointment", "appointment.png", 150, 30);
         addButton.addActionListener(_ -> {
             AppointmentMenu dialog = new AppointmentMenu(root);
             dialog.setTitle("New Appointment");

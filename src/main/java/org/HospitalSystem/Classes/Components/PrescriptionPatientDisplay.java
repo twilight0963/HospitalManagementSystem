@@ -41,7 +41,7 @@ public class PrescriptionPatientDisplay extends JPanel {
         // Add prescription buttons
         gbc.gridx = 1;
         gbc.gridy = 0;
-        HoverButton prescribeButton = new HoverButton("New Prescription", "medicine.png", 130, 30);
+        HoverButton prescribeButton = new HoverButton("New Prescription", "add.png", 130, 30);
         prescribeButton.addActionListener(_ -> {
             PrescriptionMenu dialog = new PrescriptionMenu(root, dbManager, patient);
             dialog.showAddPrescriptionDialog();
@@ -50,7 +50,7 @@ public class PrescriptionPatientDisplay extends JPanel {
         add(prescribeButton, gbc);
         
         gbc.gridy = 1;
-        HoverButton viewButton = new HoverButton("View Prescriptions", "list.png", 130, 30);
+        HoverButton viewButton = new HoverButton("View Prescriptions", "view.jpg", 130, 30);
         viewButton.addActionListener(_ -> {
             PrescriptionMenu dialog = new PrescriptionMenu(root, dbManager, patient);
             dialog.setVisible(true);
