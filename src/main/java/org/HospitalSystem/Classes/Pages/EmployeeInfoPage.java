@@ -24,7 +24,7 @@ public final class EmployeeInfoPage extends JPanel {
     private final int remainingWidth;
     private final JLabel titleLabel;
     private final DatabaseManager db;
-    private Timer refreshTimer;
+    private static Timer refreshTimer;
     private Doctor currentDoctor;
 
     public void refreshInfo() {
@@ -52,7 +52,7 @@ public final class EmployeeInfoPage extends JPanel {
             // Update info panels
             String[][] infoPanels = {
                 {"Employee ID", String.valueOf(currentDoctor.id), "doctor.png"},
-                {"Name", currentDoctor.full_name, ""},
+                {"Name", currentDoctor.full_name, "appointment.png"},
                 {"Specialisation", currentDoctor.getSpecialisation(), "Health Safari modern.png"},
                 {"Active Patients", String.valueOf(PatientService.myPatients(db).length), "patient.png"},
             };
@@ -176,6 +176,12 @@ public final class EmployeeInfoPage extends JPanel {
         // Start refresh timer (updates every 5 seconds)
         refreshTimer = new Timer(5000, _ -> refreshInfo());
         refreshTimer.start();
+    }
+
+    public static void stopRefreshTimer() {
+        if (refreshTimer != null) {
+            refreshTimer.stop();
+        }
     }
 
     public EmployeeInfoPage(JFrame root, JPanel navigatorPanel, DatabaseManager db) {

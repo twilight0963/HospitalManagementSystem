@@ -11,6 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
+import org.HospitalSystem.Classes.Pages.EmployeeInfoPage;
+import org.HospitalSystem.Classes.Pages.ReceptionPage;
 import org.HospitalSystem.Classes.Static.DBService.CurrentUserService;
 import org.HospitalSystem.HMS;
 
@@ -88,6 +90,12 @@ public class DashboardDrawer extends JPanel {
                     case "Pharmacy" -> switchPage("pharmacy", navigatorPanel, navigator, root);
                     case "Prescriptions" -> switchPage("prescriptions", navigatorPanel, navigator, root);
                     case "Log out" -> {
+                        // Stop all timers first
+                        ReceptionPage.stopRefreshTimer();
+                        EmployeeInfoPage.stopRefreshTimer();
+                        PrescriptionPatients.stopRefreshTimer();
+                        
+                        // Then logout and close window
                         CurrentUserService.logout();
                         root.dispose();
                         HMS.showLoginFrame();

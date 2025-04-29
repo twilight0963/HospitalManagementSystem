@@ -25,7 +25,7 @@ public final class ReceptionPage extends JPanel {
     private final int remainingWidth;
     private final JLabel titleLabel;
     private final DatabaseManager db;
-    private Timer refreshTimer;
+    private static Timer refreshTimer;
 
     public void refreshStatistics() {
         statusContent.removeAll();
@@ -184,6 +184,11 @@ public final class ReceptionPage extends JPanel {
         // Start refresh timer (updates every 5 seconds)
         refreshTimer = new Timer(5000, _ -> refreshStatistics());
         refreshTimer.start();
+    }
+    public static void stopRefreshTimer() {
+        if (refreshTimer != null) {
+            refreshTimer.stop();
+        }
     }
     
     public ReceptionPage(JFrame dashboard, JPanel navigatorPanel, DatabaseManager db) {

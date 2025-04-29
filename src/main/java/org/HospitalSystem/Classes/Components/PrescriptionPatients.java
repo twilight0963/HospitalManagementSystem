@@ -19,7 +19,7 @@ import org.HospitalSystem.Classes.Static.DBService.PatientService;
 
 public class PrescriptionPatients extends JPanel {
     private final JPanel patientListPanel;
-    private final Timer refreshTimer;
+    private static Timer refreshTimer;
 
     private void refreshPatients(JFrame root, DatabaseManager dbManager) {
         patientListPanel.removeAll();
@@ -67,5 +67,10 @@ public class PrescriptionPatients extends JPanel {
         // Add refresh timer (updates every 5 seconds)
         refreshTimer = new Timer(5000, _ -> refreshPatients(root, dbManager));
         refreshTimer.start();
+    }
+    public static void stopRefreshTimer() {
+        if (refreshTimer != null) {
+            refreshTimer.stop();
+        }
     }
 }
