@@ -81,7 +81,7 @@ public class HMS {
         
         root.pack();
         root.setLocationRelativeTo(null);
-        root.setResizable(true);
+        root.setResizable(false);
         root.setVisible(true);
     }
 }
