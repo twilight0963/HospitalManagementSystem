@@ -51,10 +51,10 @@ public final class EmployeeInfoPage extends JPanel {
 
             // Update info panels
             String[][] infoPanels = {
-                {"Employee ID", String.valueOf(currentDoctor.id)},
-                {"Name", currentDoctor.full_name},
-                {"Specialisation", currentDoctor.getSpecialisation()},
-                {"Active Patients", String.valueOf(PatientService.myPatients(db).length)},
+                {"Employee ID", String.valueOf(currentDoctor.id), "doctor.png"},
+                {"Name", currentDoctor.full_name, ""},
+                {"Specialisation", currentDoctor.getSpecialisation(), "Health Safari modern.png"},
+                {"Active Patients", String.valueOf(PatientService.myPatients(db).length), "patient.png"},
             };
 
             for (int row = 1; row < 3; row++) {
@@ -67,6 +67,7 @@ public final class EmployeeInfoPage extends JPanel {
                         StatusPanel panel = new StatusPanel(
                             (int)(remainingWidth/3.2),
                             infoPanels[index][0],
+                            infoPanels[index][2],
                             infoPanels[index][1]
                         );
                         infoContent.add(panel, gbc);

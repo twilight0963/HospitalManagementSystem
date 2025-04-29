@@ -61,6 +61,16 @@ public final class ReceptionPage extends JPanel {
                     case 5 -> title = "Critical Patients";
                 }
                 
+                String iconPath = "";
+                switch ((row-1) * 3 + col) {
+                    case 0 -> iconPath = "patient.png";
+                    case 1 -> iconPath = "occupied.png";
+                    case 2 -> iconPath = "room.png";
+                    case 3 -> iconPath = "dr.jpeg";
+                    case 4 -> iconPath = "amb.png";
+                    case 5 -> iconPath = "siren.png";
+                }
+
                 int status = 0;
                 switch ((row-1) * 3 + col) {
                     case 0 -> status = PatientService.patientCount(db);
@@ -74,6 +84,7 @@ public final class ReceptionPage extends JPanel {
                 statusContent.add(new StatusPanel(
                     (int)(remainingWidth/3.2), 
                     title, 
+                    iconPath,
                     String.valueOf(status)
                 ), gbc);
             }
@@ -134,6 +145,16 @@ public final class ReceptionPage extends JPanel {
                     case 4 -> title = "Ambulances";
                     case 5 -> title = "Critical Patients";
                 }
+
+                String iconPath = "";
+                switch ((row-1) * 3 + col) {
+                    case 0 -> iconPath = "patient.png";
+                    case 1 -> iconPath = "occupied.png";
+                    case 2 -> iconPath = "room.png";
+                    case 3 -> iconPath = "dr.jpeg";
+                    case 4 -> iconPath = "amb.png";
+                    case 5 -> iconPath = "siren.png";
+                }
                 
                 int status = 0;
                 switch ((row-1) * 3 + col) {
@@ -148,6 +169,7 @@ public final class ReceptionPage extends JPanel {
                 statusContent.add(new StatusPanel(
                     (int)(remainingWidth/3.2), 
                     title, 
+                    iconPath,
                     String.valueOf(status)
                 ), gbc);
             }
