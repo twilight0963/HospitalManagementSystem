@@ -18,7 +18,7 @@ import org.HospitalSystem.Classes.DatabaseManager;
 import org.HospitalSystem.Classes.Static.DBService.AppointmentService;
 
 public class AppointmentDisplay extends JPanel {
-    private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy HH:mm");
+    private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm");
 
     public AppointmentDisplay(JFrame root, DatabaseManager dbManager, Appointment appointment, 
                             int width, int height, Runnable onUpdate) {

@@ -59,7 +59,7 @@ public class AppointmentMenu extends JDialog {
         
         SpinnerDateModel startModel = new SpinnerDateModel(initDate, earliestDate, latestDate, Calendar.MINUTE);
         startTimeSpinner = new JSpinner(startModel);
-        startTimeSpinner.setEditor(new JSpinner.DateEditor(startTimeSpinner, "MMM dd, yyyy HH:mm"));
+        startTimeSpinner.setEditor(new JSpinner.DateEditor(startTimeSpinner, "dd MMM yyyy HH:mm"));
         add(startTimeSpinner, gbc);
 
         // End Time

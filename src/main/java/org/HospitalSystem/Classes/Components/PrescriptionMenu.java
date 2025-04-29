@@ -39,7 +39,7 @@ import org.HospitalSystem.Classes.Static.DBService.MedicineService;
 import org.HospitalSystem.Classes.Static.DBService.PrescriptionService;
 
 public class PrescriptionMenu extends JDialog {
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy");
     private final JPanel prescriptionListPanel;
     private final Patient patient;
     private final DatabaseManager dbManager;
@@ -168,14 +168,14 @@ public class PrescriptionMenu extends JDialog {
         gbc.gridx = 1;
         Calendar calendar = Calendar.getInstance();
         Date initDate = calendar.getTime();
-        calendar.add(Calendar.YEAR, 1);
-        Date latestDate = calendar.getTime();
-        calendar.add(Calendar.YEAR, -2);
+        calendar.add(Calendar.YEAR, -1);
         Date earliestDate = calendar.getTime();
+        calendar.add(Calendar.YEAR, 4);
+        Date latestDate = calendar.getTime();
         
         SpinnerDateModel dateModel = new SpinnerDateModel(initDate, earliestDate, latestDate, Calendar.DAY_OF_MONTH);
         JSpinner endDateSpinner = new JSpinner(dateModel);
-        endDateSpinner.setEditor(new JSpinner.DateEditor(endDateSpinner, "MMM dd, yyyy"));
+        endDateSpinner.setEditor(new JSpinner.DateEditor(endDateSpinner, "dd MMM yyyy"));
         dialog.add(endDateSpinner, gbc);
 
         // Buttons panel
