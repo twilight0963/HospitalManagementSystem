@@ -99,7 +99,7 @@ public class DashboardDrawer extends JPanel {
         
         // Create scroll pane and add the content
         JScrollPane scrollPane = new JScrollPane(scrollContent);
-        scrollContent.setPreferredSize(new java.awt.Dimension(width-20, 680));
+        scrollContent.setPreferredSize(new java.awt.Dimension(width-20, 550));
         scrollPane.setPreferredSize(new java.awt.Dimension(width-20, 680)); // Adjust height to leave room for dashboard
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
